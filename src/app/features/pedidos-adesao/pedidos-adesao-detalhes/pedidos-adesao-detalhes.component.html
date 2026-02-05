@@ -1,0 +1,293 @@
+<div class="card container mt-2 rounded-2 overflow-hidden m-auto mb-3">
+  @if (pedidoDetalhes(); as pedido) {
+    <div
+      class="d-flex align-items-center gap-3 bg-blue-500 py-3 px-4 text-inverse"
+    >
+      <div class="bg-white bg-opacity-10 py-1 px-2 rounded d-inline-block">
+        <i class="bi bi-inbox fs-5"></i>
+      </div>
+      <div>
+        <h1 class="fs-3 text-inverse">{{ pedido.orgao.razaoSocial }}</h1>
+        <p class="fs-7 text-inverse-muted">CNPJ: {{ pedido.orgao.cnpj }}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="d-flex py-3 px-4">
+        <div
+          class="d-flex justify-content-between align-items-center w-100 bg-background"
+        >
+          <button
+            class="btn btn-light border py-2 px-3 bg-background d-flex align-items-center gap-2"
+            routerLink="../"
+          >
+            <i class="bi bi-arrow-left"></i>
+            Voltar para lista
+          </button>
+
+          <span
+            class="badge fs-7 px-3 py-2 rounded-pill d-flex align-items-center justify-content-center"
+            [ngClass]="getBadgeClass(pedido.status)"
+          >
+            {{ pedido.status }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container p-4">
+      <div class="d-flex gap-2 align-items-center">
+        <i-tabler name="building" class="icone-tamanho text-blue-500" />
+        <h3 class="fw-semibold fs-6">Dados do Órgão</h3>
+      </div>
+
+      <div class="row g-4 mt-2">
+        <div class="col-md-4">
+          <div class="mb-3">
+            <div class="text-muted small">CNPJ</div>
+            <div>{{ pedido.orgao.cnpj }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">CEP</div>
+            <div>{{ pedido.orgao.cep }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">Complemento</div>
+            <div>{{ pedido.orgao.complemento }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">Município</div>
+            <div>{{ pedido.orgao.municipio }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">Site</div>
+            <div>{{ pedido.orgao.site }}</div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="mb-3">
+            <div class="text-muted small">Razão Social</div>
+            <div>{{ pedido.orgao.razaoSocial }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">Endereço</div>
+            <div>{{ pedido.orgao.endereco }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">Bairro</div>
+            <div>{{ pedido.orgao.bairro }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">Código IBGE</div>
+            <div>{{ pedido.orgao.ibge }}</div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="mb-3">
+            <div class="text-muted small">Número</div>
+            <div>{{ pedido.orgao.numero }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">Estado</div>
+            <div>{{ pedido.orgao.estado }}</div>
+          </div>
+          <div class="mb-3">
+            <div class="text-muted small">Telefone / Celular</div>
+            <div>{{ pedido.orgao.telefone }}</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="my-3 border-border" />
+
+      <div class="d-flex gap-2 align-items-center">
+        <i-tabler name="users" class="icone-tamanho text-blue-500"></i-tabler>
+        <h3 class="fs-6 fw-semibold">Usuários</h3>
+      </div>
+
+      @for (usuario of pedido.usuarios; track usuario.cpf) {
+        <div class="card border rounded-3 p-4 mt-2 bg-card">
+          <div class="row g-3">
+            <div class="col-md-3 col-6">
+              <small class="text-muted d-block">Nome</small>
+              <p>{{ usuario.nome }}</p>
+            </div>
+            <div class="col-md-3 col-6">
+              <small class="text-muted d-block">CPF</small>
+              <p>{{ usuario.cpf }}</p>
+            </div>
+            <div class="col-md-3 col-6">
+              <small class="text-muted d-block">Nº da Portaria</small>
+              <p>{{ usuario.portaria }}</p>
+            </div>
+            <div class="col-md-3 col-6">
+              <small class="text-muted d-block">E-mail</small>
+              <p>{{ usuario.email }}</p>
+            </div>
+            <div class="col-md-3 col-6">
+              <small class="text-muted d-block">Celular</small>
+              <p>{{ usuario.celular }}</p>
+            </div>
+            <div class="col-md-3 col-6">
+              <small class="text-muted d-block">Data Início Vigência</small>
+              <p>{{ usuario.inicioVigencia }}</p>
+            </div>
+            <div class="col-md-3 col-6">
+              <small class="text-muted d-block">Cargo</small>
+              <p>{{ usuario.cargo }}</p>
+            </div>
+            <div class="col-md-3 col-6">
+              <small class="text-muted d-block"
+                >Vinculado a todas unidades</small
+              >
+              <p>{{ usuario.vinculadoTodasUnidades ? "Sim" : "Não" }}</p>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <p class="text-muted mt-3">Nenhum usuário cadastrado.</p>
+      }
+
+      <hr class="my-3 border-border" />
+
+      <div class="d-flex gap-2 align-items-center mt-2">
+        <i-tabler
+          name="briefcase-2"
+          class="icone-tamanho text-blue-500"
+        ></i-tabler>
+        <h3 class="fs-6 fw-semibold">Secretarias</h3>
+      </div>
+
+      @for (secretaria of pedido.secretarias; track secretaria.cnpj) {
+        <div class="card border rounded-3 p-4 mt-2 bg-card">
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <div class="text-muted small">Nome</div>
+              <div>{{ secretaria.nome }}</div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-muted small">CNPJ</div>
+              <div>{{ secretaria.cnpj }}</div>
+            </div>
+            <div class="col-md-4">
+              <div class="text-muted small">Telefone</div>
+              <div>{{ secretaria.telefone }}</div>
+            </div>
+          </div>
+
+          <hr class="my-3 border-border" />
+
+          <div class="mb-2">
+            <div class="text-muted small mb-2">Secretário Responsável</div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="text-muted small">Nome</div>
+                <div>{{ secretaria.secretario.nome }}</div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-muted small">CPF</div>
+                <div>{{ secretaria.secretario.cpf }}</div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-muted small">E-mail</div>
+                <div>{{ secretaria.secretario.email }}</div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-muted small">Celular</div>
+                <div>{{ secretaria.secretario.celular }}</div>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-3 border-border" />
+
+          <div class="mb-2">
+            <div class="text-muted small mb-2">Equipe</div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="text-muted small">Agente de Contratação</div>
+                <div>{{ secretaria.equipe.agenteContratacao }}</div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-muted small">Pregoeiro</div>
+                <div>{{ secretaria.equipe.pregoeiro }}</div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-muted small">Equipe de Apoio</div>
+                <div>{{ secretaria.equipe.apoio }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <p class="text-muted mt-3">Nenhuma secretaria cadastrada.</p>
+      }
+
+      <div class="d-flex gap-2 align-items-center mt-2">
+        <i-tabler
+          name="file-text"
+          class="icone-tamanho text-blue-500"
+        ></i-tabler>
+        <h3 class="fs-6 fw-semibold">Documentos Anexados</h3>
+      </div>
+
+      @for (documento of pedido.documentos; track documento.nome) {
+        <div class="card border rounded-3 p-3 bg-card mt-2">
+          <div
+            class="d-flex flex-row align-items-center justify-content-between"
+          >
+            <div>{{ documento.nome }}</div>
+
+            <div class="d-flex gap-2">
+              <button
+                class="btn btn-light border d-flex align-items-center gap-2 px-3 py-1"
+              >
+                <i class="bi bi-eye"></i>
+                Visualizar
+              </button>
+              <button
+                class="btn btn-light border d-flex align-items-center gap-2 px-3 py-1"
+              >
+                <i class="bi bi-check"></i>
+                Aceitar
+              </button>
+              <button
+                class="btn btn-light border d-flex align-items-center gap-2 px-3 py-1"
+              >
+                <i class="bi bi-x"></i>
+                Retificar
+              </button>
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <p class="text-muted mt-3">Nenhum documento anexado.</p>
+      }
+
+      <div class="ms-3 mt-4">
+        <label class="form-label text-muted small">Motivo:</label>
+        <textarea
+          class="form-control p-3"
+          rows="3"
+          placeholder="Informe o que precisa ser retificado..."
+        ></textarea>
+      </div>
+
+      <hr class="my-4 border-border" />
+
+      <div class="d-flex justify-content-end">
+        <button
+          class="btn btn-light border d-flex align-items-center gap-2 px-4 py-2 bg-blue-500 text-white"
+        >
+          Salvar Cadastro
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="p-5 text-center text-muted">
+      Pedido não encontrado ou ainda carregando...
+    </div>
+  }
+</div>

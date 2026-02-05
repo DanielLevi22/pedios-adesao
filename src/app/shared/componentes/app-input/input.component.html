@@ -1,0 +1,21 @@
+<div class="search-wrapper w-100 bg-background h-100">
+  <div class="input-group search-group position-relative h-100">
+    <span
+      class="input-group-text bg-white px-3 border-0 d-flex align-items-center justify-content-center bg-background"
+    >
+      <ng-content select="[prefix]"></ng-content>
+
+      @if (!prefixProjected() && icon()) {
+        <i [class]="icon()" class="text-muted"></i>
+      }
+    </span>
+
+    <input
+      type="text"
+      class="form-control border-0 shadow-none"
+      [placeholder]="placeholder()"
+      [ngModel]="value()"
+      (ngModelChange)="value.set($event)"
+    />
+  </div>
+</div>

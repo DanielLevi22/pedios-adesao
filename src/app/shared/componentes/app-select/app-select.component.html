@@ -1,0 +1,23 @@
+<ng-select
+  class="custom-ng-select"
+  [items]="items()"
+  bindLabel="name"
+  bindValue="id"
+  [placeholder]="placeholder()"
+  [searchable]="true"
+  [clearable]="false"
+  [multiple]="false"
+  [closeOnSelect]="true"
+  [dropdownPosition]="'auto'"
+  appendTo="body"
+  [(ngModel)]="value"
+>
+  <ng-template ng-option-tmp let-item="item">
+    <div class="d-flex align-items-center px-3 py-2">
+      @if (item.id === value()) {
+        <i class="bi bi-check text-primary fs-5 me-2"></i>
+      }
+      <span class="flex-grow-1">{{ item.name }}</span>
+    </div>
+  </ng-template>
+</ng-select>

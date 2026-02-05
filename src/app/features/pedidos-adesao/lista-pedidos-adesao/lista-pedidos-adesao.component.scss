@@ -1,0 +1,19 @@
+.table-hover tbody tr:hover {
+  background-color: rgb(249, 250, 251) !important;
+  cursor: pointer;
+}
+
+.table thead th {
+  background-color: white;
+  padding: 1rem;
+  font-size: 0.875rem;
+}
+
+.table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
