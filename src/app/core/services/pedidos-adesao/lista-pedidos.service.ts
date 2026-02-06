@@ -1,5 +1,11 @@
 import { Injectable, signal } from '@angular/core';
-import type { PedidoDetalhe, PedidoResumo } from '../../model/pedidos';
+import type {
+  Documento,
+  DocumentoStatus,
+  PedidoDetalhe,
+  PedidoResumo,
+  PedidoStatus,
+} from '../../model/pedidos';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +18,7 @@ export class ListaPedidosService {
       razaoSocial: 'Prefeitura de São Paulo',
       municipioUf: 'São Paulo/SP',
       dataSolicitacao: '01/02/2026',
-      status: 'Aprovado',
+      status: 'Aceito',
     },
     {
       id: '2',
@@ -20,7 +26,7 @@ export class ListaPedidosService {
       razaoSocial: 'Prefeitura de Curitiba',
       municipioUf: 'Curitiba/PR',
       dataSolicitacao: '28/01/2026',
-      status: 'Pendente',
+      status: 'Em análise',
     },
     {
       id: '3',
@@ -28,7 +34,7 @@ export class ListaPedidosService {
       razaoSocial: 'Prefeitura de Salvador',
       municipioUf: 'Salvador/BA',
       dataSolicitacao: '25/01/2026',
-      status: 'Rejeitado',
+      status: 'Em Retificação',
     },
     {
       id: '4',
@@ -36,7 +42,7 @@ export class ListaPedidosService {
       razaoSocial: 'Prefeitura de Belo Horizonte',
       municipioUf: 'Belo Horizonte/MG',
       dataSolicitacao: '20/01/2026',
-      status: 'Em análise',
+      status: 'Pendente',
     },
     {
       id: '5',
@@ -44,7 +50,7 @@ export class ListaPedidosService {
       razaoSocial: 'Prefeitura de Recife',
       municipioUf: 'Recife/PE',
       dataSolicitacao: '18/01/2026',
-      status: 'Aprovado',
+      status: 'Aceito',
     },
     {
       id: '6',
@@ -52,14 +58,13 @@ export class ListaPedidosService {
       razaoSocial: 'Prefeitura de Manaus',
       municipioUf: 'Manaus/AM',
       dataSolicitacao: '15/01/2026',
-      status: 'Pendente',
+      status: 'Em Retificação',
     },
   ]);
-
   private pedidosDetalheSignal = signal<PedidoDetalhe[]>([
     {
       id: '1',
-      status: 'Aprovado',
+      status: 'Aceito',
       dataSolicitacao: '01/02/2026',
       orgao: {
         cnpj: '12.345.678/0001-90',
@@ -116,13 +121,18 @@ export class ListaPedidosService {
         },
       ],
       documentos: [
-        { nome: 'Termo de adesão assinado', status: 'Pendente' },
-        { nome: 'Comprovante de CNPJ', status: 'Aprovado' },
+        { id: 'doc-1-1', nome: 'Termo de adesão assinado', status: 'Aceito' },
+        { id: 'doc-1-2', nome: 'Comprovante de CNPJ', status: 'Aceito' },
+        {
+          id: 'doc-1-3',
+          nome: 'Certidão negativa de débitos',
+          status: 'Aceito',
+        },
       ],
     },
     {
       id: '2',
-      status: 'Pendente',
+      status: 'Em análise',
       dataSolicitacao: '28/01/2026',
       orgao: {
         cnpj: '98.765.432/0001-10',
@@ -151,11 +161,19 @@ export class ListaPedidosService {
         },
       ],
       secretarias: [],
-      documentos: [{ nome: 'Termo de adesão assinado', status: 'Pendente' }],
+      documentos: [
+        { id: 'doc-2-1', nome: 'Termo de adesão assinado', status: 'Aceito' },
+        { id: 'doc-2-2', nome: 'Comprovante de CNPJ', status: 'Aceito' },
+        {
+          id: 'doc-2-3',
+          nome: 'Certidão negativa de débitos',
+          status: 'Pendente',
+        },
+      ],
     },
     {
       id: '3',
-      status: 'Rejeitado',
+      status: 'Em Retificação',
       dataSolicitacao: '25/01/2026',
       orgao: {
         cnpj: '11.222.333/0001-55',
@@ -184,11 +202,24 @@ export class ListaPedidosService {
         },
       ],
       secretarias: [],
-      documentos: [{ nome: 'Termo de adesão assinado', status: 'Rejeitado' }],
+      documentos: [
+        { id: 'doc-3-1', nome: 'Termo de adesão assinado', status: 'Aceito' },
+        {
+          id: 'doc-3-2',
+          nome: 'Comprovante de CNPJ',
+          status: 'Em Retificação',
+          motivoRetificacao: 'Falta assinatura digital',
+        },
+        {
+          id: 'doc-3-3',
+          nome: 'Certidão negativa de débitos',
+          status: 'Aceito',
+        },
+      ],
     },
     {
       id: '4',
-      status: 'Em análise',
+      status: 'Pendente',
       dataSolicitacao: '20/01/2026',
       orgao: {
         cnpj: '22.333.444/0001-66',
@@ -206,11 +237,14 @@ export class ListaPedidosService {
       },
       usuarios: [],
       secretarias: [],
-      documentos: [{ nome: 'Termo de adesão assinado', status: 'Pendente' }],
+      documentos: [
+        { id: 'doc-4-1', nome: 'Termo de adesão assinado', status: 'Pendente' },
+        { id: 'doc-4-2', nome: 'Comprovante de CNPJ', status: 'Pendente' },
+      ],
     },
     {
       id: '5',
-      status: 'Aprovado',
+      status: 'Aceito',
       dataSolicitacao: '18/01/2026',
       orgao: {
         cnpj: '33.444.555/0001-77',
@@ -229,13 +263,12 @@ export class ListaPedidosService {
       usuarios: [],
       secretarias: [],
       documentos: [
-        { nome: 'Termo de adesão assinado', status: 'Aprovado' },
-        { nome: 'Comprovante de CNPJ', status: 'Aprovado' },
+        { id: 'doc-6-1', nome: 'Termo de adesão assinado', status: 'Aceito' },
       ],
     },
     {
       id: '6',
-      status: 'Pendente',
+      status: 'Em Retificação',
       dataSolicitacao: '15/01/2026',
       orgao: {
         cnpj: '44.555.666/0001-88',
@@ -253,7 +286,15 @@ export class ListaPedidosService {
       },
       usuarios: [],
       secretarias: [],
-      documentos: [{ nome: 'Termo de adesão assinado', status: 'Pendente' }],
+      documentos: [
+        {
+          id: 'doc-6-1',
+          nome: 'Termo de adesão assinado',
+          status: 'Em Retificação',
+          motivoRetificacao: 'Registro de motivo de retificação',
+        },
+        { id: 'doc-6-2', nome: 'Comprovante de CNPJ', status: 'Pendente' },
+      ],
     },
   ]);
 
@@ -265,5 +306,96 @@ export class ListaPedidosService {
 
   getDetalheById(id: string) {
     return this.pedidosDetalheSignal().find((p) => p.id === id) ?? null;
+  }
+
+  atualizarStatusDocumento(
+    pedidoId: string,
+    documentoId: string,
+    novoStatus: DocumentoStatus,
+    motivoRetificacao?: string,
+  ): void {
+    this.pedidosDetalheSignal.update((pedidosDetalhe) =>
+      pedidosDetalhe.map((pedido) => {
+        if (pedido.id !== pedidoId) return pedido;
+
+        const documentosAtualizados: Documento[] = (
+          pedido.documentos ?? []
+        ).map((doc) => {
+          if (doc.id !== documentoId) return doc;
+
+          if (novoStatus === 'Aceito') {
+            return {
+              ...doc,
+              status: 'Aceito',
+              motivoRetificacao: undefined,
+            };
+          }
+
+          if (novoStatus === 'Pendente') {
+            return {
+              ...doc,
+              status: 'Pendente',
+              motivoRetificacao: undefined,
+            };
+          }
+
+          if (novoStatus === 'Em Retificação') {
+            return {
+              ...doc,
+              status: 'Em Retificação',
+              motivoRetificacao:
+                motivoRetificacao?.trim() || doc.motivoRetificacao || '',
+            };
+          }
+
+          return doc;
+        });
+
+        const novoStatusPedido: PedidoStatus = this.calcularStatusPedido(
+          documentosAtualizados,
+        );
+
+        return {
+          ...pedido,
+          status: novoStatusPedido,
+          documentos: documentosAtualizados,
+        };
+      }),
+    );
+
+    this.pedidosSignal.update((pedidosResumo) =>
+      pedidosResumo.map((pedido) =>
+        pedido.id === pedidoId
+          ? {
+              ...pedido,
+              status:
+                this.pedidosDetalheSignal().find((p) => p.id === pedidoId)
+                  ?.status ?? pedido.status,
+            }
+          : pedido,
+      ),
+    );
+  }
+
+  private calcularStatusPedido(documentos: Documento[]): PedidoStatus {
+    if (!documentos?.length) {
+      return 'Pendente';
+    }
+
+    const temEmRetificacao = documentos.some(
+      (doc) => doc.status === 'Em Retificação',
+    );
+
+    const todosAceitos = documentos.every((doc) => doc.status === 'Aceito');
+
+    if (todosAceitos) {
+      return 'Aceito';
+    }
+
+    if (temEmRetificacao) {
+      return 'Em Retificação';
+    }
+
+    return 'Em análise';
   }
 }

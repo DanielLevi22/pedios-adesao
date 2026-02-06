@@ -1,0 +1,96 @@
+@use "../abstracts/variables" as *;
+@use "bootstrap/scss/bootstrap" as *;
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 400;
+  height: 100%;
+  border-radius: 0.5rem;
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+  &.btn-light {
+    background-color: #fff;
+    border-color: hsl(210 20% 90%);
+    color: var(--bs-body-color);
+
+    &:hover:not(:disabled) {
+      background-color: hsl(210 20% 96%);
+    }
+  }
+}
+
+.btn-status {
+  @extend .btn-outline-success;
+}
+
+.btn-status-ativo {
+  @extend .btn-success;
+  color: #fff;
+}
+
+.btn-retificar {
+  @extend .btn-outline-danger;
+}
+
+.btn-retificar-ativo {
+  @extend .btn-danger;
+  color: #fff;
+}
+
+.button-altura {
+  height: 2.25rem;
+  background: hsl(210deg 20% 95% / 30%);
+}
+
+.icon-button {
+  height: 0.875rem !important;
+  width: 0.875rem !important;
+}
+.btn-acao {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+
+  &.acao-aceitar {
+    &.selecionado {
+      @extend .btn-success;
+      color: white;
+    }
+
+    &.disponivel {
+      @extend .btn-outline-success;
+    }
+
+    &.desabilitado {
+      @extend .btn-outline-secondary;
+      opacity: 0.5;
+    }
+  }
+
+  &.acao-retificar {
+    &.selecionado {
+      @extend .btn-danger;
+      color: white;
+    }
+
+    &.disponivel {
+      @extend .btn-outline-danger;
+    }
+
+    &.desabilitado {
+      @extend .btn-outline-secondary;
+      opacity: 0.5;
+    }
+  }
+}

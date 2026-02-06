@@ -1,0 +1,44 @@
+.toast-bottom-right {
+  right: 24px !important;
+  bottom: 24px !important;
+}
+.toast-container .ngx-toastr {
+  background-color: hsl(0, 6%, 72%) !important;
+  color: hsl(222.2 47.4% 11.2%) !important;
+  border-radius: 12px !important;
+  border: 1px solid hsl(214.3 31.8% 91.4%) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  opacity: 1 !important;
+}
+
+.toast-container .toast-success,
+.toast-container .toast-info,
+.toast-container .toast-warning,
+.toast-container .toast-error {
+  background-color: hsl(0 0% 100%) !important;
+  color: inherit !important;
+  border-left: none !important;
+  box-shadow: none !important;
+}
+.toast-container .toast-icon {
+  color: hsl(222.2 47.4% 11.2%) !important;
+  fill: hsl(222.2 47.4% 11.2%) !important;
+  margin: 0 !important;
+}
+.toast-container .toast-message {
+  margin: 0 !important;
+  line-height: 1.4;
+}
+
+.toast-container .toast-title {
+  display: none !important;
+}
+
+.toast-container button.toast-close-button {
+  display: none !important;
+}

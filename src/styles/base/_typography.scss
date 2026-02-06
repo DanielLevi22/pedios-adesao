@@ -1,0 +1,43 @@
+@use "../abstracts/variables" as *;
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+dd,
+dt,
+blockquote,
+figure,
+pre,
+table {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+.fs-7 {
+  font-size: $f7 !important;
+}
+.text-primary {
+  color: $text-primary !important;
+}
+.text-secondary {
+  color: $text-secondary !important;
+}
+.text-inverse {
+  color: $text-inverse !important;
+}
+.text-inverse-muted {
+  color: $text-inverse-muted !important;
+}

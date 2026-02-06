@@ -1,52 +1,41 @@
-<div class="card container mt-2 rounded-2 overflow-hidden m-auto fs-6">
-  <div
-    class="d-flex align-items-center gap-3 bg-blue-500 py-3 px-4 text-inverse"
+<app-header
+  title="Pedidos de Adesão - Órgãos"
+  subtitle="Gerencie as solicitações de adesão de órgãos públicos"
+  icon="bi bi-inbox"
+>
+  <app-input
+    placeholder="Buscar por nome..."
+    class="w-100"
+    [(value)]="filtroNome"
   >
-    <div class="bg-white bg-opacity-10 py-1 px-2 rounded d-inline-block">
-      <i class="bi bi-inbox fs-5"></i>
-    </div>
-    <div>
-      <h1 class="fs-3 fw-semibold text-inverse">Pedidos de Adesão - Órgãos</h1>
-      <p class="fs-7 text-inverse-muted">
-        Gerencie as solicitações de adesão de órgãos públicos
-      </p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="d-flex py-3 px-4">
-      <div class="d-flex gap-3 w-100 bg-background">
-        <app-input
-          placeholder="Buscar por nome..."
-          class="w-100"
-          [(value)]="filtroNome"
-        >
-          <i prefix class="bi bi-search text-muted"></i>
-        </app-input>
+    <i prefix class="bi bi-search text-muted"></i>
+  </app-input>
 
-        <app-input
-          placeholder="Buscar por CNPJ "
-          class="w-100"
-          [(value)]="filtroCnpj"
-        >
-          <i prefix class="bi bi-search text-muted"></i>
-        </app-input>
+  <app-input
+    placeholder="Buscar por CNPJ "
+    class="w-100"
+    [(value)]="filtroCnpj"
+  >
+    <i prefix class="bi bi-search text-muted"></i>
+  </app-input>
 
-        <app-select
-          class="w-100 flex-fill"
-          [items]="statusItems"
-          placeholder="Filtrar por status"
-          [(value)]="filtroStatus"
-        ></app-select>
-        <button
-          class="btn btn-light border flex-fill w-100 py-2 px-3 bg-background"
-          (click)="limparFiltros()"
-        >
-          Limpar Filtros
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+  <app-select
+    class="w-100 flex-fill"
+    [items]="statusItems"
+    placeholder="Filtrar por status"
+    [(value)]="filtroStatus"
+  ></app-select>
+
+  <app-button
+    variant="light"
+    size="md"
+    (onClick)="limparFiltros()"
+    [fullWidth]="true"
+    class="w-100 flex-fill"
+  >
+    Limpar Filtros
+  </app-button>
+</app-header>
 
 <div class="card container mt-4 m-auto fs-6 overflow-hidden">
   <table class="table table-hover mb-0">
@@ -76,13 +65,14 @@
             </span>
           </td>
           <td class="text-center">
-            <a
+            <app-button
+              variant="light"
+              size="sm"
               [routerLink]="['detalhes', item.id]"
-              class="btn btn-light border py-1 px-3 d-inline-flex align-items-center gap-2 bg-background"
             >
               <i-tabler name="eye" class="icon-button" />
               Detalhes
-            </a>
+            </app-button>
           </td>
         </tr>
       }

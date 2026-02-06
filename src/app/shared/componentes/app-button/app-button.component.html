@@ -1,0 +1,11 @@
+<button
+  [type]="type()"
+  [ngClass]="getClasses()"
+  [disabled]="disabled()"
+  [routerLink]="routerLink() || null"
+  (click)="onClick.emit($event)"
+>
+  <span class="btn-content">
+    <ng-content />
+  </span>
+</button>

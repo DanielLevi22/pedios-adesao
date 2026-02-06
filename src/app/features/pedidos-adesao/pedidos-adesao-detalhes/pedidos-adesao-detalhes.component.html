@@ -1,41 +1,33 @@
-<div class="card container mt-2 rounded-2 overflow-hidden m-auto mb-3">
-  @if (pedidoDetalhes(); as pedido) {
+@if (pedido(); as pedido) {
+  <app-header
+    [title]="pedido.orgao.razaoSocial"
+    [subtitle]="'CNPJ: ' + pedido.orgao.cnpj"
+    icon="bi bi-inbox"
+  >
     <div
-      class="d-flex align-items-center gap-3 bg-blue-500 py-3 px-4 text-inverse"
+      class="d-flex justify-content-between align-items-center w-100 bg-white"
     >
-      <div class="bg-white bg-opacity-10 py-1 px-2 rounded d-inline-block">
-        <i class="bi bi-inbox fs-5"></i>
-      </div>
-      <div>
-        <h1 class="fs-3 text-inverse">{{ pedido.orgao.razaoSocial }}</h1>
-        <p class="fs-7 text-inverse-muted">CNPJ: {{ pedido.orgao.cnpj }}</p>
-      </div>
+      <app-button
+        variant="light"
+        size="md"
+        [routerLink]="['/']"
+        customClass="border bg-background"
+      >
+        <i class="bi bi-arrow-left"></i>
+        Voltar para lista
+      </app-button>
+
+      <span
+        class="badge fs-7 px-3 py-2 rounded-pill d-flex align-items-center justify-content-center"
+        [ngClass]="getBadgeClass(pedido.status)"
+      >
+        {{ pedido.status }}
+      </span>
     </div>
+  </app-header>
 
-    <div class="row">
-      <div class="d-flex py-3 px-4">
-        <div
-          class="d-flex justify-content-between align-items-center w-100 bg-background"
-        >
-          <button
-            class="btn btn-light border py-2 px-3 bg-background d-flex align-items-center gap-2"
-            routerLink="../"
-          >
-            <i class="bi bi-arrow-left"></i>
-            Voltar para lista
-          </button>
-
-          <span
-            class="badge fs-7 px-3 py-2 rounded-pill d-flex align-items-center justify-content-center"
-            [ngClass]="getBadgeClass(pedido.status)"
-          >
-            {{ pedido.status }}
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <div class="container p-4">
+  <div class="card container mt-2 rounded-2 overflow-hidden m-auto mb-3">
+    <div class="container card p-4">
       <div class="d-flex gap-2 align-items-center">
         <i-tabler name="building" class="icone-tamanho text-blue-500" />
         <h3 class="fw-semibold fs-6">Dados do Órgão</h3>
@@ -233,61 +225,84 @@
         <h3 class="fs-6 fw-semibold">Documentos Anexados</h3>
       </div>
 
-      @for (documento of pedido.documentos; track documento.nome) {
+      @for (documento of pedido.documentos; track documento.id) {
         <div class="card border rounded-3 p-3 bg-card mt-2">
+          <!-- Debug: mostra o status atual -->
+          <div class="small text-muted mb-2">
+            Status atual: {{ documento.status }}
+          </div>
+
           <div
             class="d-flex flex-row align-items-center justify-content-between"
           >
-            <div>{{ documento.nome }}</div>
+            <div class="fw-medium">{{ documento.nome }}</div>
 
             <div class="d-flex gap-2">
-              <button
-                class="btn btn-light border d-flex align-items-center gap-2 px-3 py-1"
+              <app-button variant="light" size="md">
+                <i class="bi bi-eye"></i> Visualizar
+              </app-button>
+              <app-button
+                [variant]="
+                  documento.status === 'Aceito' ? 'status-ativo' : 'light'
+                "
+                size="md"
+                (onClick)="aceitar(documento)"
               >
-                <i class="bi bi-eye"></i>
-                Visualizar
-              </button>
-              <button
-                class="btn btn-light border d-flex align-items-center gap-2 px-3 py-1"
-              >
-                <i class="bi bi-check"></i>
+                <i class="bi bi-check-lg"></i>
                 Aceitar
-              </button>
-              <button
-                class="btn btn-light border d-flex align-items-center gap-2 px-3 py-1"
+              </app-button>
+
+              <app-button
+                [variant]="
+                  documento.status === 'Em Retificação'
+                    ? 'retificar-ativo'
+                    : 'light'
+                "
+                size="md"
+                (onClick)="retificar(documento)"
               >
-                <i class="bi bi-x"></i>
+                <i class="bi bi-x-lg"></i>
                 Retificar
-              </button>
+              </app-button>
             </div>
           </div>
         </div>
+
+        @if (documento.status === "Em Retificação") {
+          <div class="ms-3 mt-2 p-3">
+            <label class="form-label text-muted small">Motivo:</label>
+            <textarea
+              [name]="'motivo_' + documento.id"
+              [(ngModel)]="documento.motivoRetificacao"
+              (ngModelChange)="
+                atualizarMotivoRetificacao(documento.id!, $event)
+              "
+              class="form-control p-3"
+              rows="3"
+              placeholder="Informe o que precisa ser retificado..."
+            ></textarea>
+          </div>
+        }
       } @empty {
         <p class="text-muted mt-3">Nenhum documento anexado.</p>
       }
 
-      <div class="ms-3 mt-4">
-        <label class="form-label text-muted small">Motivo:</label>
-        <textarea
-          class="form-control p-3"
-          rows="3"
-          placeholder="Informe o que precisa ser retificado..."
-        ></textarea>
-      </div>
-
       <hr class="my-4 border-border" />
 
       <div class="d-flex justify-content-end">
-        <button
-          class="btn btn-light border d-flex align-items-center gap-2 px-4 py-2 bg-blue-500 text-white"
+        <app-button
+          variant="primary"
+          size="md"
+          [disabled]="rascunhoAlteracoes().size === 0"
+          (click)="salvarAlteracoes()"
         >
           Salvar Cadastro
-        </button>
+        </app-button>
       </div>
     </div>
-  } @else {
-    <div class="p-5 text-center text-muted">
-      Pedido não encontrado ou ainda carregando...
-    </div>
-  }
-</div>
+  </div>
+} @else {
+  <div class="p-5 text-center text-muted">
+    Pedido não encontrado ou ainda carregando...
+  </div>
+}

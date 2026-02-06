@@ -1,10 +1,18 @@
+export type PedidoStatus =
+  | 'Aceito'
+  | 'Pendente'
+  | 'Em Retificação'
+  | 'Em análise';
+
+export type DocumentoStatus = 'Aceito' | 'Pendente' | 'Em Retificação';
+
 export interface PedidoResumo {
   id: string;
   cnpj: string;
   razaoSocial: string;
   municipioUf: string;
   dataSolicitacao: string;
-  status: 'Aprovado' | 'Pendente' | 'Rejeitado' | 'Em análise';
+  status: PedidoStatus;
 }
 
 export interface Usuario {
@@ -40,8 +48,10 @@ export interface Secretaria {
 }
 
 export interface Documento {
+  id: string;
   nome: string;
-  status: 'Pendente' | 'Aprovado' | 'Rejeitado';
+  status: DocumentoStatus;
+  motivoRetificacao?: string;
 }
 
 export interface OrgaoDetalhe {
@@ -61,7 +71,7 @@ export interface OrgaoDetalhe {
 
 export interface PedidoDetalhe {
   id: string;
-  status: 'Aprovado' | 'Pendente' | 'Rejeitado' | 'Em análise';
+  status: PedidoStatus;
   dataSolicitacao: string;
   orgao: OrgaoDetalhe;
   usuarios: Usuario[];

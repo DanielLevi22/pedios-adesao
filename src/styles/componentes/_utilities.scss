@@ -1,0 +1,26 @@
+@use "../abstracts/variables" as *;
+
+.bg-blue-500 {
+  background-color: rgb(87, 156, 188);
+}
+.bg-background {
+  background-color: $background;
+}
+
+.bg-blue-badge {
+  background-color: $background-blue;
+}
+
+.card {
+  border-color: $border;
+}
+
+.border-border {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: hsl(210 20% 90%);
+}
+
+.bg-card {
+  background: hsl(210deg 20% 95% / 30%);
+}

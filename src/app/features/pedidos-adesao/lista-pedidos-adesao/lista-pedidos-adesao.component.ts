@@ -11,6 +11,9 @@ import { RouterLink } from '@angular/router';
 import { AppInputComponent } from '../../../shared/componentes/app-input/input.component';
 import { provideTablerIcons, TablerIconComponent } from 'angular-tabler-icons';
 import { IconEye } from 'angular-tabler-icons/icons';
+import { AppButtonComponent } from '../../../shared/componentes/app-button/app-button.component';
+import { AppHeaderComponent } from '../../../shared/componentes/app-header/app-header.component';
+import { getBadgeClassByStatus } from '../../../shared/utils/status-ui.utils';
 
 @Component({
   selector: 'app-lista-pedidos-adesao',
@@ -22,6 +25,8 @@ import { IconEye } from 'angular-tabler-icons/icons';
     RouterLink,
     AppInputComponent,
     TablerIconComponent,
+    AppButtonComponent,
+    AppHeaderComponent,
   ],
   providers: [
     provideTablerIcons({
@@ -37,6 +42,7 @@ export class ListaPedidosAdesaoComponent {
   filtroNome = signal<string>('');
   filtroCnpj = signal<string>('');
   filtroStatus = signal<string>('all');
+  getBadgeClass = getBadgeClassByStatus;
 
   pedidosFiltrados = computed(() => {
     const pedidosAtuais = this.pedidos();
@@ -44,13 +50,11 @@ export class ListaPedidosAdesaoComponent {
     const cnpjTermo = this.filtroCnpj().trim().replace(/\D/g, '');
     const statusSelecionado = this.filtroStatus();
 
-    // Early return: sem filtro nenhum
     if (!nomeTermo && !cnpjTermo && statusSelecionado === 'all') {
       return pedidosAtuais;
     }
 
     return pedidosAtuais.filter((p) => {
-      // Filtro por nome (razão social ou CNPJ parcial sem acentos)
       const matchNome =
         !nomeTermo ||
         this.normalizar(p.razaoSocial || '').includes(nomeTermo) ||
@@ -69,11 +73,12 @@ export class ListaPedidosAdesaoComponent {
 
   statusItems: SelectItem[] = [
     { id: 'all', name: 'Todos os status' },
-    { id: 'pendente', name: 'Pendente' },
-    { id: 'em_analise', name: 'Em Análise' },
-    { id: 'aceito', name: 'Aceito' },
-    { id: 'em_retificacao', name: 'Em Retificação' },
+    { id: 'Pendente', name: 'Pendente' },
+    { id: 'Em análise', name: 'Em análise' },
+    { id: 'Aprovado', name: 'Aprovado' },
+    { id: 'Rejeitado', name: 'Rejeitado' },
   ];
+
   atualizarStatus(novoValor: string) {
     this.filtroStatus.set(novoValor);
   }
@@ -89,19 +94,5 @@ export class ListaPedidosAdesaoComponent {
     this.filtroNome.set('');
     this.filtroCnpj.set('');
     this.filtroStatus.set('all');
-  }
-  getBadgeClass(status: string): string {
-    switch (status) {
-      case 'Aprovado':
-        return 'bg-success text-white';
-      case 'Pendente':
-        return 'bg-warning text-dark';
-      case 'Rejeitado':
-        return 'bg-danger text-white';
-      case 'Em análise':
-        return 'bg-info text-white';
-      default:
-        return 'bg-secondary text-white';
-    }
   }
 }
