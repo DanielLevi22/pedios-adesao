@@ -1,9 +1,10 @@
-import { Component, input, model } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, forwardRef, input, model, signal } from '@angular/core';
 import {
-  NgSelectComponent,
-  NgOptionTemplateDirective,
-} from '@ng-select/ng-select';
+  ControlValueAccessor,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 export interface SelectItem {
   id: string;
@@ -13,18 +14,53 @@ export interface SelectItem {
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [NgSelectComponent, FormsModule, NgOptionTemplateDirective],
+  imports: [NgSelectModule, FormsModule],
   templateUrl: './app-select.component.html',
   styleUrl: './app-select.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => AppSelectComponent),
+      multi: true,
+    },
+  ],
 })
-export class AppSelectComponent {
+export class AppSelectComponent implements ControlValueAccessor {
   items = input.required<SelectItem[]>();
   placeholder = input<string>('Selecione...');
-  value = model<string>('');
+  bindLabel = input<string>('name');
+  bindValue = input<string>('id');
+  clearable = input<boolean>(true);
+  searchable = input<boolean>(true);
 
-  ngOnInit() {
-    if (!this.value()) {
-      this.value.set(this.items()[0]?.id || '');
-    }
+  value = signal<string | null>(null);
+  isDisabled = signal<boolean>(false);
+
+  onChange: (value: string | null) => void = () => {};
+  onTouched: () => void = () => {};
+
+  writeValue(obj: any): void {
+    this.value.set(obj);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  onModelChange(value: string | null) {
+    this.value.set(value);
+    this.onChange(value);
+  }
+
+  onBlur() {
+    this.onTouched();
   }
 }

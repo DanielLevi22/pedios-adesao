@@ -7,10 +7,12 @@
   [searchable]="true"
   [clearable]="false"
   [multiple]="false"
-  [closeOnSelect]="true"
   [dropdownPosition]="'auto'"
   appendTo="body"
-  [(ngModel)]="value"
+  [disabled]="isDisabled()"
+  [ngModel]="value()"
+  (ngModelChange)="onModelChange($event)"
+  (blur)="onBlur()"
 >
   <ng-template ng-option-tmp let-item="item">
     <div class="d-flex align-items-center px-3 py-2">

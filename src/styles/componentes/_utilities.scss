@@ -4,9 +4,11 @@
   background-color: rgb(87, 156, 188);
 }
 .bg-background {
-  background-color: $background;
+  background-color: $background !important;
 }
-
+.filter-input {
+  min-height: 42px !important;
+}
 .bg-blue-badge {
   background-color: $background-blue;
 }

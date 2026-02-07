@@ -3,38 +3,46 @@
   subtitle="Gerencie as solicitações de adesão de órgãos públicos"
   icon="bi bi-inbox"
 >
-  <app-input
-    placeholder="Buscar por nome..."
-    class="w-100"
-    [(value)]="filtroNome"
+  <div
+    class="d-flex flex-column flex-md-row gap-2 gap-md-3 w-100"
+    [formGroup]="filterForm"
   >
-    <i prefix class="bi bi-search text-muted"></i>
-  </app-input>
+    <app-input
+      placeholder="Buscar por nome..."
+      class="w-100"
+      formControlName="nome"
+    >
+      <i prefix class="bi bi-search text-muted"></i>
+    </app-input>
 
-  <app-input
-    placeholder="Buscar por CNPJ "
-    class="w-100"
-    [(value)]="filtroCnpj"
-  >
-    <i prefix class="bi bi-search text-muted"></i>
-  </app-input>
+    <app-input
+      placeholder="Buscar por CNPJ..."
+      class="w-100"
+      formControlName="cnpj"
+    >
+      <i prefix class="bi bi-search text-muted"></i>
+    </app-input>
 
-  <app-select
-    class="w-100 flex-fill"
-    [items]="statusItems"
-    placeholder="Filtrar por status"
-    [(value)]="filtroStatus"
-  ></app-select>
+    <app-select
+      [items]="statusItems"
+      bindLabel="name"
+      bindValue="id"
+      [clearable]="false"
+      formControlName="status"
+      placeholder="Todos os status"
+      class="w-100"
+    ></app-select>
 
-  <app-button
-    variant="light"
-    size="md"
-    (onClick)="limparFiltros()"
-    [fullWidth]="true"
-    class="w-100 flex-fill"
-  >
-    Limpar Filtros
-  </app-button>
+    <app-button
+      variant="light"
+      size="sm"
+      (onClick)="limparFiltros()"
+      [fullWidth]="true"
+      class="w-100 filter-input"
+    >
+      Limpar Filtros
+    </app-button>
+  </div>
 </app-header>
 
 <div class="card container mt-4 m-auto fs-6 overflow-hidden">

@@ -1,6 +1,8 @@
 .custom-ng-select ::ng-deep .ng-select-container {
   padding: 20px 12px !important;
   background-color: rgb(249, 250, 251);
+  border-color: hsl(210 20% 90%);
+  height: 42px !important;
 }
 
 .custom-ng-select ::ng-deep .ng-value-container {
