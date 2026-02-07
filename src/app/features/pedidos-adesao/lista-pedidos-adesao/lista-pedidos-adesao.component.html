@@ -38,44 +38,96 @@
 </app-header>
 
 <div class="card container mt-4 m-auto fs-6 overflow-hidden">
-  <table class="table table-hover mb-0">
-    <thead>
-      <tr class="">
-        <th class="fw-semibold p-4 text-secondary">CNPJ</th>
-        <th class="fw-semibold p-4 text-secondary">Razão Social</th>
-        <th class="fw-semibold p-4 text-secondary">Município/UF</th>
-        <th class="fw-semibold p-4 text-secondary">Data Solicitação</th>
-        <th class="fw-semibold p-4 text-secondary">Status</th>
-        <th class="fw-semibold p-4 text-secondary text-end">Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (item of pedidosFiltrados(); track item.id) {
+  @defer (on viewport) {
+    <table class="table table-hover mb-0">
+      <thead>
         <tr>
-          <td class="p-4">{{ item.cnpj }}</td>
-          <td class="p-4">{{ item.razaoSocial }}</td>
-          <td class="p-4">{{ item.municipioUf }}</td>
-          <td class="p-4">{{ item.dataSolicitacao }}</td>
-          <td class="p-4">
-            <span
-              class="badge fs-7 px-2 py-1 rounded-pill fw-semibold"
-              [ngClass]="getBadgeClass(item.status)"
-            >
-              {{ item.status }}
-            </span>
-          </td>
-          <td class="text-center">
-            <app-button
-              variant="light"
-              size="sm"
-              [routerLink]="['detalhes', item.id]"
-            >
-              <i-tabler name="eye" class="icon-button" />
-              Detalhes
-            </app-button>
-          </td>
+          <th class="fw-semibold p-4 text-secondary">CNPJ</th>
+          <th class="fw-semibold p-4 text-secondary">Razão Social</th>
+          <th class="fw-semibold p-4 text-secondary">Município/UF</th>
+          <th class="fw-semibold p-4 text-secondary">Data Solicitação</th>
+          <th class="fw-semibold p-4 text-secondary">Status</th>
+          <th class="fw-semibold p-4 text-secondary text-end">Ações</th>
         </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        @for (item of pedidosFiltrados(); track item.id) {
+          <tr>
+            <td class="p-4">{{ item.cnpj }}</td>
+            <td class="p-4">{{ item.razaoSocial }}</td>
+            <td class="p-4">{{ item.municipioUf }}</td>
+            <td class="p-4">{{ item.dataSolicitacao }}</td>
+            <td class="p-4">
+              <span
+                class="badge fs-7 px-2 py-1 rounded-pill fw-semibold"
+                [ngClass]="getBadgeClass(item.status)"
+              >
+                {{ item.status }}
+              </span>
+            </td>
+            <td class="text-center">
+              <app-button
+                variant="light"
+                size="sm"
+                [routerLink]="['detalhes', item.id]"
+              >
+                <i-tabler name="eye" class="icon-button" />
+                Detalhes
+              </app-button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="text-center p-5 text-muted">
+              Nenhum pedido encontrado.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  } @placeholder (minimum 500ms) {
+    <table class="table mb-0" aria-hidden="true">
+      <thead>
+        <tr>
+          <th class="fw-semibold p-4 text-secondary">CNPJ</th>
+          <th class="fw-semibold p-4 text-secondary">Razão Social</th>
+          <th class="fw-semibold p-4 text-secondary">Município/UF</th>
+          <th class="fw-semibold p-4 text-secondary">Data Solicitação</th>
+          <th class="fw-semibold p-4 text-secondary">Status</th>
+          <th class="fw-semibold p-4 text-secondary text-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody class="placeholder-glow">
+        @for (skeleton of [1, 2, 3, 4, 5]; track skeleton) {
+          <tr>
+            <td class="p-4">
+              <span
+                class="placeholder col-12 rounded bg-secondary opacity-25"
+              ></span>
+            </td>
+            <td class="p-4">
+              <span class="placeholder col-8 rounded bg-secondary"></span>
+            </td>
+            <td class="p-4">
+              <span
+                class="placeholder col-10 rounded bg-secondary opacity-25"
+              ></span>
+            </td>
+            <td class="p-4">
+              <span class="placeholder col-12 rounded bg-secondary"></span>
+            </td>
+            <td class="p-4">
+              <span
+                class="placeholder col-12 rounded-pill bg-secondary opacity-25"
+                style="height: 24px; display: block"
+              ></span>
+            </td>
+            <td class="p-4 text-center">
+              <span class="placeholder col-8 rounded bg-secondary"></span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
 </div>

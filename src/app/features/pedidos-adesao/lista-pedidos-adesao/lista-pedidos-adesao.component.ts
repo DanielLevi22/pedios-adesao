@@ -14,6 +14,7 @@ import { IconEye } from 'angular-tabler-icons/icons';
 import { AppButtonComponent } from '../../../shared/componentes/app-button/app-button.component';
 import { AppHeaderComponent } from '../../../shared/componentes/app-header/app-header.component';
 import { getBadgeClassByStatus } from '../../../shared/utils/status-ui.utils';
+import type { PedidoResumo } from '../../../core/models/pedidos';
 
 @Component({
   selector: 'app-lista-pedidos-adesao',
@@ -38,14 +39,17 @@ import { getBadgeClassByStatus } from '../../../shared/utils/status-ui.utils';
 })
 export class ListaPedidosAdesaoComponent {
   private service = inject(ListaPedidosService);
-  pedidos = this.service.getPedidos();
+
+  pedidosSignal = signal<PedidoResumo[]>([]);
+
   filtroNome = signal<string>('');
   filtroCnpj = signal<string>('');
   filtroStatus = signal<string>('all');
+
   getBadgeClass = getBadgeClassByStatus;
 
   pedidosFiltrados = computed(() => {
-    const pedidosAtuais = this.pedidos();
+    const pedidosAtuais = this.pedidosSignal();
     const nomeTermo = this.normalizar(this.filtroNome());
     const cnpjTermo = this.filtroCnpj().trim().replace(/\D/g, '');
     const statusSelecionado = this.filtroStatus();
@@ -75,9 +79,18 @@ export class ListaPedidosAdesaoComponent {
     { id: 'all', name: 'Todos os status' },
     { id: 'Pendente', name: 'Pendente' },
     { id: 'Em análise', name: 'Em análise' },
-    { id: 'Aprovado', name: 'Aprovado' },
-    { id: 'Rejeitado', name: 'Rejeitado' },
+    { id: 'Aceito', name: 'Aceito' },
+    { id: 'Em Retificação', name: 'Em Retificação' },
   ];
+
+  constructor() {
+    this.carregarPedidos();
+  }
+
+  private async carregarPedidos() {
+    const pedidos = await this.service.getPedidos();
+    this.pedidosSignal.set(pedidos);
+  }
 
   atualizarStatus(novoValor: string) {
     this.filtroStatus.set(novoValor);
@@ -90,6 +103,7 @@ export class ListaPedidosAdesaoComponent {
       .toLowerCase()
       .trim();
   }
+
   limparFiltros() {
     this.filtroNome.set('');
     this.filtroCnpj.set('');

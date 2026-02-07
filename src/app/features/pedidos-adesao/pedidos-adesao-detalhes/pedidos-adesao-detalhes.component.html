@@ -26,281 +26,408 @@
     </div>
   </app-header>
 
-  <div class="card container mt-2 rounded-2 overflow-hidden m-auto mb-3">
-    <div class="container card p-4">
-      <div class="d-flex gap-2 align-items-center">
-        <i-tabler name="building" class="icone-tamanho text-blue-500" />
-        <h3 class="fw-semibold fs-6">Dados do Órgão</h3>
-      </div>
-
-      <div class="row g-4 mt-2">
-        <div class="col-md-4">
-          <div class="mb-3">
-            <div class="text-muted small">CNPJ</div>
-            <div>{{ pedido.orgao.cnpj }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">CEP</div>
-            <div>{{ pedido.orgao.cep }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">Complemento</div>
-            <div>{{ pedido.orgao.complemento }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">Município</div>
-            <div>{{ pedido.orgao.municipio }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">Site</div>
-            <div>{{ pedido.orgao.site }}</div>
-          </div>
+  @defer (on viewport) {
+    <div class="card container mt-2 rounded-2 overflow-hidden m-auto mb-3">
+      <div class="container card p-4">
+        <div class="d-flex gap-2 align-items-center">
+          <i-tabler name="building" class="icone-tamanho text-blue-500" />
+          <h3 class="fw-semibold fs-6">Dados do Órgão</h3>
         </div>
 
-        <div class="col-md-4">
-          <div class="mb-3">
-            <div class="text-muted small">Razão Social</div>
-            <div>{{ pedido.orgao.razaoSocial }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">Endereço</div>
-            <div>{{ pedido.orgao.endereco }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">Bairro</div>
-            <div>{{ pedido.orgao.bairro }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">Código IBGE</div>
-            <div>{{ pedido.orgao.ibge }}</div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="mb-3">
-            <div class="text-muted small">Número</div>
-            <div>{{ pedido.orgao.numero }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">Estado</div>
-            <div>{{ pedido.orgao.estado }}</div>
-          </div>
-          <div class="mb-3">
-            <div class="text-muted small">Telefone / Celular</div>
-            <div>{{ pedido.orgao.telefone }}</div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="my-3 border-border" />
-
-      <div class="d-flex gap-2 align-items-center">
-        <i-tabler name="users" class="icone-tamanho text-blue-500"></i-tabler>
-        <h3 class="fs-6 fw-semibold">Usuários</h3>
-      </div>
-
-      @for (usuario of pedido.usuarios; track usuario.cpf) {
-        <div class="card border rounded-3 p-4 mt-2 bg-card">
-          <div class="row g-3">
-            <div class="col-md-3 col-6">
-              <small class="text-muted d-block">Nome</small>
-              <p>{{ usuario.nome }}</p>
-            </div>
-            <div class="col-md-3 col-6">
-              <small class="text-muted d-block">CPF</small>
-              <p>{{ usuario.cpf }}</p>
-            </div>
-            <div class="col-md-3 col-6">
-              <small class="text-muted d-block">Nº da Portaria</small>
-              <p>{{ usuario.portaria }}</p>
-            </div>
-            <div class="col-md-3 col-6">
-              <small class="text-muted d-block">E-mail</small>
-              <p>{{ usuario.email }}</p>
-            </div>
-            <div class="col-md-3 col-6">
-              <small class="text-muted d-block">Celular</small>
-              <p>{{ usuario.celular }}</p>
-            </div>
-            <div class="col-md-3 col-6">
-              <small class="text-muted d-block">Data Início Vigência</small>
-              <p>{{ usuario.inicioVigencia }}</p>
-            </div>
-            <div class="col-md-3 col-6">
-              <small class="text-muted d-block">Cargo</small>
-              <p>{{ usuario.cargo }}</p>
-            </div>
-            <div class="col-md-3 col-6">
-              <small class="text-muted d-block"
-                >Vinculado a todas unidades</small
-              >
-              <p>{{ usuario.vinculadoTodasUnidades ? "Sim" : "Não" }}</p>
-            </div>
-          </div>
-        </div>
-      } @empty {
-        <p class="text-muted mt-3">Nenhum usuário cadastrado.</p>
-      }
-
-      <hr class="my-3 border-border" />
-
-      <div class="d-flex gap-2 align-items-center mt-2">
-        <i-tabler
-          name="briefcase-2"
-          class="icone-tamanho text-blue-500"
-        ></i-tabler>
-        <h3 class="fs-6 fw-semibold">Secretarias</h3>
-      </div>
-
-      @for (secretaria of pedido.secretarias; track secretaria.cnpj) {
-        <div class="card border rounded-3 p-4 mt-2 bg-card">
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <div class="text-muted small">Nome</div>
-              <div>{{ secretaria.nome }}</div>
-            </div>
-            <div class="col-md-4">
+        <div class="row g-4 mt-2">
+          <div class="col-md-4">
+            <div class="mb-3">
               <div class="text-muted small">CNPJ</div>
-              <div>{{ secretaria.cnpj }}</div>
+              <div>{{ pedido.orgao.cnpj }}</div>
             </div>
-            <div class="col-md-4">
-              <div class="text-muted small">Telefone</div>
-              <div>{{ secretaria.telefone }}</div>
+            <div class="mb-3">
+              <div class="text-muted small">CEP</div>
+              <div>{{ pedido.orgao.cep }}</div>
             </div>
-          </div>
-
-          <hr class="my-3 border-border" />
-
-          <div class="mb-2">
-            <div class="text-muted small mb-2">Secretário Responsável</div>
-            <div class="row">
-              <div class="col-md-3">
-                <div class="text-muted small">Nome</div>
-                <div>{{ secretaria.secretario.nome }}</div>
-              </div>
-              <div class="col-md-3">
-                <div class="text-muted small">CPF</div>
-                <div>{{ secretaria.secretario.cpf }}</div>
-              </div>
-              <div class="col-md-3">
-                <div class="text-muted small">E-mail</div>
-                <div>{{ secretaria.secretario.email }}</div>
-              </div>
-              <div class="col-md-3">
-                <div class="text-muted small">Celular</div>
-                <div>{{ secretaria.secretario.celular }}</div>
-              </div>
+            <div class="mb-3">
+              <div class="text-muted small">Complemento</div>
+              <div>{{ pedido.orgao.complemento }}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted small">Município</div>
+              <div>{{ pedido.orgao.municipio }}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted small">Site</div>
+              <div>{{ pedido.orgao.site }}</div>
             </div>
           </div>
 
-          <hr class="my-3 border-border" />
-
-          <div class="mb-2">
-            <div class="text-muted small mb-2">Equipe</div>
-            <div class="row">
-              <div class="col-md-3">
-                <div class="text-muted small">Agente de Contratação</div>
-                <div>{{ secretaria.equipe.agenteContratacao }}</div>
-              </div>
-              <div class="col-md-3">
-                <div class="text-muted small">Pregoeiro</div>
-                <div>{{ secretaria.equipe.pregoeiro }}</div>
-              </div>
-              <div class="col-md-3">
-                <div class="text-muted small">Equipe de Apoio</div>
-                <div>{{ secretaria.equipe.apoio }}</div>
-              </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <div class="text-muted small">Razão Social</div>
+              <div>{{ pedido.orgao.razaoSocial }}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted small">Endereço</div>
+              <div>{{ pedido.orgao.endereco }}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted small">Bairro</div>
+              <div>{{ pedido.orgao.bairro }}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted small">Código IBGE</div>
+              <div>{{ pedido.orgao.ibge }}</div>
             </div>
           </div>
-        </div>
-      } @empty {
-        <p class="text-muted mt-3">Nenhuma secretaria cadastrada.</p>
-      }
 
-      <div class="d-flex gap-2 align-items-center mt-2">
-        <i-tabler
-          name="file-text"
-          class="icone-tamanho text-blue-500"
-        ></i-tabler>
-        <h3 class="fs-6 fw-semibold">Documentos Anexados</h3>
-      </div>
-
-      @for (documento of pedido.documentos; track documento.id) {
-        <div class="card border rounded-3 p-3 bg-card mt-2">
-          <!-- Debug: mostra o status atual -->
-          <div class="small text-muted mb-2">
-            Status atual: {{ documento.status }}
-          </div>
-
-          <div
-            class="d-flex flex-row align-items-center justify-content-between"
-          >
-            <div class="fw-medium">{{ documento.nome }}</div>
-
-            <div class="d-flex gap-2">
-              <app-button variant="light" size="md">
-                <i class="bi bi-eye"></i> Visualizar
-              </app-button>
-              <app-button
-                [variant]="
-                  documento.status === 'Aceito' ? 'status-ativo' : 'light'
-                "
-                size="md"
-                (onClick)="aceitar(documento)"
-              >
-                <i class="bi bi-check-lg"></i>
-                Aceitar
-              </app-button>
-
-              <app-button
-                [variant]="
-                  documento.status === 'Em Retificação'
-                    ? 'retificar-ativo'
-                    : 'light'
-                "
-                size="md"
-                (onClick)="retificar(documento)"
-              >
-                <i class="bi bi-x-lg"></i>
-                Retificar
-              </app-button>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <div class="text-muted small">Número</div>
+              <div>{{ pedido.orgao.numero }}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted small">Estado</div>
+              <div>{{ pedido.orgao.estado }}</div>
+            </div>
+            <div class="mb-3">
+              <div class="text-muted small">Telefone / Celular</div>
+              <div>{{ pedido.orgao.telefone }}</div>
             </div>
           </div>
         </div>
 
-        @if (documento.status === "Em Retificação") {
-          <div class="ms-3 mt-2 p-3">
-            <label class="form-label text-muted small">Motivo:</label>
-            <textarea
-              [name]="'motivo_' + documento.id"
-              [(ngModel)]="documento.motivoRetificacao"
-              (ngModelChange)="
-                atualizarMotivoRetificacao(documento.id!, $event)
-              "
-              class="form-control p-3"
-              rows="3"
-              placeholder="Informe o que precisa ser retificado..."
-            ></textarea>
+        <hr class="my-3 border-border" />
+
+        <div class="d-flex gap-2 align-items-center">
+          <i-tabler name="users" class="icone-tamanho text-blue-500"></i-tabler>
+          <h3 class="fs-6 fw-semibold">Usuários</h3>
+        </div>
+
+        @for (usuario of pedido.usuarios; track usuario.cpf) {
+          <div class="card border rounded-3 p-4 mt-2 bg-card">
+            <div class="row g-3">
+              <div class="col-md-3 col-6">
+                <small class="text-muted d-block">Nome</small>
+                <p>{{ usuario.nome }}</p>
+              </div>
+              <div class="col-md-3 col-6">
+                <small class="text-muted d-block">CPF</small>
+                <p>{{ usuario.cpf }}</p>
+              </div>
+              <div class="col-md-3 col-6">
+                <small class="text-muted d-block">Nº da Portaria</small>
+                <p>{{ usuario.portaria }}</p>
+              </div>
+              <div class="col-md-3 col-6">
+                <small class="text-muted d-block">E-mail</small>
+                <p>{{ usuario.email }}</p>
+              </div>
+              <div class="col-md-3 col-6">
+                <small class="text-muted d-block">Celular</small>
+                <p>{{ usuario.celular }}</p>
+              </div>
+              <div class="col-md-3 col-6">
+                <small class="text-muted d-block">Data Início Vigência</small>
+                <p>{{ usuario.inicioVigencia }}</p>
+              </div>
+              <div class="col-md-3 col-6">
+                <small class="text-muted d-block">Cargo</small>
+                <p>{{ usuario.cargo }}</p>
+              </div>
+              <div class="col-md-3 col-6">
+                <small class="text-muted d-block"
+                  >Vinculado a todas unidades</small
+                >
+                <p>{{ usuario.vinculadoTodasUnidades ? "Sim" : "Não" }}</p>
+              </div>
+            </div>
           </div>
+        } @empty {
+          <p class="text-muted mt-3">Nenhum usuário cadastrado.</p>
         }
-      } @empty {
-        <p class="text-muted mt-3">Nenhum documento anexado.</p>
-      }
 
-      <hr class="my-4 border-border" />
+        <hr class="my-3 border-border" />
 
-      <div class="d-flex justify-content-end">
-        <app-button
-          variant="primary"
-          size="md"
-          [disabled]="rascunhoAlteracoes().size === 0"
-          (click)="salvarAlteracoes()"
-        >
-          Salvar Cadastro
-        </app-button>
+        <div class="d-flex gap-2 align-items-center mt-2">
+          <i-tabler
+            name="briefcase-2"
+            class="icone-tamanho text-blue-500"
+          ></i-tabler>
+          <h3 class="fs-6 fw-semibold">Secretarias</h3>
+        </div>
+
+        @for (secretaria of pedido.secretarias; track secretaria.cnpj) {
+          <div class="card border rounded-3 p-4 mt-2 bg-card">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <div class="text-muted small">Nome</div>
+                <div>{{ secretaria.nome }}</div>
+              </div>
+              <div class="col-md-4">
+                <div class="text-muted small">CNPJ</div>
+                <div>{{ secretaria.cnpj }}</div>
+              </div>
+              <div class="col-md-4">
+                <div class="text-muted small">Telefone</div>
+                <div>{{ secretaria.telefone }}</div>
+              </div>
+            </div>
+
+            <hr class="my-3 border-border" />
+
+            <div class="mb-2">
+              <div class="text-muted small mb-2">Secretário Responsável</div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="text-muted small">Nome</div>
+                  <div>{{ secretaria.secretario.nome }}</div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-muted small">CPF</div>
+                  <div>{{ secretaria.secretario.cpf }}</div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-muted small">E-mail</div>
+                  <div>{{ secretaria.secretario.email }}</div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-muted small">Celular</div>
+                  <div>{{ secretaria.secretario.celular }}</div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-3 border-border" />
+
+            <div class="mb-2">
+              <div class="text-muted small mb-2">Equipe</div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="text-muted small">Agente de Contratação</div>
+                  <div>{{ secretaria.equipe.agenteContratacao }}</div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-muted small">Pregoeiro</div>
+                  <div>{{ secretaria.equipe.pregoeiro }}</div>
+                </div>
+                <div class="col-md-3">
+                  <div class="text-muted small">Equipe de Apoio</div>
+                  <div>{{ secretaria.equipe.apoio }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <p class="text-muted mt-3">Nenhuma secretaria cadastrada.</p>
+        }
+
+        <div class="d-flex gap-2 align-items-center mt-2">
+          <i-tabler
+            name="file-text"
+            class="icone-tamanho text-blue-500"
+          ></i-tabler>
+          <h3 class="fs-6 fw-semibold">Documentos Anexados</h3>
+        </div>
+
+        @for (documento of pedido.documentos; track documento.id) {
+          <div class="card border rounded-3 p-3 bg-card mt-2">
+            <div class="small text-muted mb-2">
+              Status atual: {{ documento.status }}
+            </div>
+
+            <div
+              class="d-flex flex-row align-items-center justify-content-between"
+            >
+              <div class="fw-medium">{{ documento.nome }}</div>
+
+              <div class="d-flex gap-2">
+                <app-button variant="light" size="md">
+                  <i class="bi bi-eye"></i> Visualizar
+                </app-button>
+                <app-button
+                  [variant]="
+                    documento.status === 'Aceito' ? 'status-ativo' : 'light'
+                  "
+                  size="md"
+                  (onClick)="aceitar(documento)"
+                >
+                  <i class="bi bi-check-lg"></i>
+                  Aceitar
+                </app-button>
+
+                <app-button
+                  [variant]="
+                    documento.status === 'Em Retificação'
+                      ? 'retificar-ativo'
+                      : 'light'
+                  "
+                  size="md"
+                  (onClick)="retificar(documento)"
+                >
+                  <i class="bi bi-x-lg"></i>
+                  Retificar
+                </app-button>
+              </div>
+            </div>
+          </div>
+
+          @if (documento.status === "Em Retificação") {
+            <div class="ms-3 mt-2 p-3">
+              <label class="form-label text-muted small">Motivo:</label>
+              <textarea
+                [name]="'motivo_' + documento.id"
+                [(ngModel)]="documento.motivoRetificacao"
+                (ngModelChange)="
+                  atualizarMotivoRetificacao(documento.id!, $event)
+                "
+                class="form-control p-3"
+                rows="3"
+                placeholder="Informe o que precisa ser retificado..."
+              ></textarea>
+            </div>
+          }
+        } @empty {
+          <p class="text-muted mt-3">Nenhum documento anexado.</p>
+        }
+
+        <hr class="my-4 border-border" />
+
+        <div class="d-flex justify-content-end">
+          <app-button
+            variant="primary"
+            size="md"
+            [disabled]="rascunhoAlteracoes().size === 0"
+            (click)="salvarAlteracoes()"
+          >
+            Salvar Cadastro
+          </app-button>
+        </div>
       </div>
     </div>
-  </div>
+  } @placeholder (minimum 500ms) {
+    <div
+      class="card container mt-2 rounded-2 overflow-hidden m-auto mb-3"
+      aria-hidden="true"
+    >
+      <div class="container card p-4 placeholder-glow">
+        <div class="d-flex gap-2 align-items-center mb-4">
+          <span
+            class="placeholder col-1 bg-secondary rounded"
+            style="width: 24px; height: 24px"
+          ></span>
+          <span class="placeholder col-3 bg-secondary rounded"></span>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <span
+                class="placeholder col-4 mb-1 d-block bg-secondary opacity-25"
+              ></span>
+              <span class="placeholder col-8 bg-secondary rounded"></span>
+            </div>
+            <div class="mb-3">
+              <span
+                class="placeholder col-3 mb-1 d-block bg-secondary opacity-25"
+              ></span>
+              <span class="placeholder col-6 bg-secondary rounded"></span>
+            </div>
+            <div class="mb-3">
+              <span
+                class="placeholder col-4 mb-1 d-block bg-secondary opacity-25"
+              ></span>
+              <span class="placeholder col-7 bg-secondary rounded"></span>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <span
+                class="placeholder col-4 mb-1 d-block bg-secondary opacity-25"
+              ></span>
+              <span class="placeholder col-9 bg-secondary rounded"></span>
+            </div>
+            <div class="mb-3">
+              <span
+                class="placeholder col-3 mb-1 d-block bg-secondary opacity-25"
+              ></span>
+              <span class="placeholder col-10 bg-secondary rounded"></span>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <span
+                class="placeholder col-3 mb-1 d-block bg-secondary opacity-25"
+              ></span>
+              <span class="placeholder col-4 bg-secondary rounded"></span>
+            </div>
+            <div class="mb-3">
+              <span
+                class="placeholder col-5 mb-1 d-block bg-secondary opacity-25"
+              ></span>
+              <span class="placeholder col-8 bg-secondary rounded"></span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-3 border-border opacity-25" />
+
+        <div class="d-flex gap-2 align-items-center mb-2">
+          <span
+            class="placeholder col-1 bg-secondary rounded"
+            style="width: 24px; height: 24px"
+          ></span>
+          <span class="placeholder col-2 bg-secondary rounded"></span>
+        </div>
+        <div class="card border rounded-3 p-4 mt-2 mb-4">
+          <div class="row g-3">
+            <div class="col-md-3 col-6">
+              <span class="placeholder col-12 bg-secondary rounded"></span>
+            </div>
+            <div class="col-md-3 col-6">
+              <span class="placeholder col-8 bg-secondary rounded"></span>
+            </div>
+            <div class="col-md-3 col-6">
+              <span class="placeholder col-10 bg-secondary rounded"></span>
+            </div>
+            <div class="col-md-3 col-6">
+              <span class="placeholder col-7 bg-secondary rounded"></span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-3 border-border opacity-25" />
+
+        <div class="d-flex gap-2 align-items-center mb-2">
+          <span
+            class="placeholder col-1 bg-secondary rounded"
+            style="width: 24px; height: 24px"
+          ></span>
+          <span class="placeholder col-2 bg-secondary rounded"></span>
+        </div>
+        <div class="card border rounded-3 p-4 mt-2">
+          <div class="row mb-3">
+            <div class="col-4">
+              <span class="placeholder col-10 bg-secondary rounded"></span>
+            </div>
+            <div class="col-4">
+              <span class="placeholder col-8 bg-secondary rounded"></span>
+            </div>
+            <div class="col-4">
+              <span class="placeholder col-6 bg-secondary rounded"></span>
+            </div>
+          </div>
+          <hr class="opacity-25" />
+          <div class="row">
+            <div class="col-3">
+              <span class="placeholder col-12 bg-secondary rounded"></span>
+            </div>
+            <div class="col-3">
+              <span class="placeholder col-10 bg-secondary rounded"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 } @else {
   <div class="p-5 text-center text-muted">
     Pedido não encontrado ou ainda carregando...

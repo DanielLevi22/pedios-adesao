@@ -1,4 +1,4 @@
-import type { PedidoStatus } from '../../core/model/pedidos';
+import type { PedidoStatus } from '../../core/models/pedidos';
 
 export function getBadgeClassByStatus(status: PedidoStatus): string {
   switch (status) {
@@ -7,7 +7,7 @@ export function getBadgeClassByStatus(status: PedidoStatus): string {
     case 'Pendente':
       return 'bg-blue-badge text-white';
     case 'Em análise':
-      return 'bg-warning text-dark';
+      return 'bg-warning text-white';
     case 'Em Retificação':
       return 'bg-danger text-white';
     default:

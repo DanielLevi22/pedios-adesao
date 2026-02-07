@@ -10,15 +10,15 @@ import {
 import { ListaPedidosService } from '../../../core/services/pedidos-adesao/lista-pedidos.service';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import type {
-  Documento,
-  DocumentoStatus,
-  PedidoDetalhe,
-} from '../../../core/model/pedidos';
 import { AppButtonComponent } from '../../../shared/componentes/app-button/app-button.component';
 import { AppHeaderComponent } from '../../../shared/componentes/app-header/app-header.component';
 import { ToastrService } from 'ngx-toastr';
 import { getBadgeClassByStatus } from '../../../shared/utils/status-ui.utils';
+import type { PedidoDetalhe } from '../../../core/models/pedidos';
+import type {
+  Documento,
+  DocumentoStatus,
+} from '../../../core/models/documentos';
 
 @Component({
   selector: 'app-pedidos-adesao-detalhes',

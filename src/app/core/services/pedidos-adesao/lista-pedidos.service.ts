@@ -1,11 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import type {
-  Documento,
-  DocumentoStatus,
   PedidoDetalhe,
   PedidoResumo,
   PedidoStatus,
-} from '../../model/pedidos';
+} from '../../models/pedidos';
+import type { Documento, DocumentoStatus } from '../../models/documentos';
 
 @Injectable({
   providedIn: 'root',
@@ -300,10 +299,15 @@ export class ListaPedidosService {
 
   constructor() {}
 
-  getPedidos() {
-    return this.pedidosSignal.asReadonly();
+  async getPedidos(): Promise<PedidoResumo[]> {
+    await this.delay(1500 + Math.random() * 1500);
+
+    return this.pedidosSignal();
   }
 
+  private delay(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
   getDetalheById(id: string) {
     return this.pedidosDetalheSignal().find((p) => p.id === id) ?? null;
   }
@@ -382,17 +386,22 @@ export class ListaPedidosService {
       return 'Pendente';
     }
 
-    const temEmRetificacao = documentos.some(
-      (doc) => doc.status === 'Em Retificação',
-    );
-
     const todosAceitos = documentos.every((doc) => doc.status === 'Aceito');
-
     if (todosAceitos) {
       return 'Aceito';
     }
 
-    if (temEmRetificacao) {
+    const todosPendentes = documentos.every((doc) => doc.status === 'Pendente');
+    if (todosPendentes) {
+      return 'Pendente';
+    }
+
+    const temEmRetificacao = documentos.some(
+      (doc) => doc.status === 'Em Retificação',
+    );
+    const temPendente = documentos.some((doc) => doc.status === 'Pendente');
+
+    if (temEmRetificacao && !temPendente) {
       return 'Em Retificação';
     }
 
