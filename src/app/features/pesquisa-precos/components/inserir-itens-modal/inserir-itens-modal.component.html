@@ -1,0 +1,175 @@
+
+<div class="modal-header border-0 pb-0">
+  <h5 class="modal-title fw-bold">
+    <i class="bi bi-plus text-primary me-2"></i>Inserir Itens
+  </h5>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  ></button>
+</div>
+<div class="modal-body pt-0">
+  <p class="text-secondary small mb-3">
+    Escolha uma das formas abaixo para inserir itens na pesquisa de preços.
+  </p>
+
+  <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" class="nav-tabs nav-pills bg-light rounded p-1 mb-4">
+    <li [ngbNavItem]="1" class="flex-fill text-center">
+      <a ngbNavLink class="text-secondary fw-bold small w-100 d-flex justify-content-center align-items-center">
+        <i class="bi bi-clipboard-data me-2"></i>Carregar Demandas
+      </a>
+      <ng-template ngbNavContent>
+        <div class="mt-3">
+            <!-- Step 1: List of Demandas -->
+            <div *ngIf="!showDemandItems">
+                <h6 class="fw-bold mb-2">Pesquisar Demanda (DFD)</h6>
+                <div class="input-group mb-3">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="bi bi-search text-secondary"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0" placeholder="Buscar por número ou descrição...">
+                </div>
+
+                <h6 class="fw-bold mb-2">Demandas Disponíveis (17)</h6>
+                <div class="list-group list-group-flush border-top">
+                    <div *ngFor="let item of demandas" 
+                         class="list-group-item d-flex justify-content-between align-items-center px-3 py-3 cursor-pointer"
+                         [class.active-demanda]="selectedDemanda === item"
+                         (click)="selectDemanda(item)">
+                        <div>
+                            <div class="fw-bold mb-1">{{ item.id }}</div>
+                            <div class="text-secondary small">{{ item.titulo }}</div>
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary rounded-pill me-2">{{ item.itens }} {{ item.itens > 1 ? 'itens' : 'item' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mt-3 pt-3 border-top">
+                    <app-button variant="light" customClass="border me-2" (onClick)="close()">Cancelar</app-button>
+                    <app-button 
+                        variant="secondary" 
+                        customClass="bg-info border-0 text-white" 
+                        (onClick)="advanceToItems()"
+                        [disabled]="!selectedDemanda">
+                        Avançar <i class="bi bi-arrow-right ms-1"></i>
+                    </app-button>
+                </div>
+            </div>
+
+            <!-- Step 2: List of Items in Demanda -->
+            <div *ngIf="showDemandItems">
+                 <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold mb-0">Itens da Demanda ({{ demandItems.length }})</h6>
+                    <button class="btn btn-outline-secondary btn-sm" (click)="toggleSelectAll()">
+                        <i class="bi bi-check2"></i> Desmarcar Todos
+                    </button>
+                </div>
+
+                <div class="table-responsive border rounded">
+                    <table class="table table-hover mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col" class="ps-3" style="width: 5%;"></th>
+                                <th scope="col" style="width: 45%;">Descrição</th>
+                                <th scope="col" style="width: 20%;"></th>
+                                <th scope="col" style="width: 15%;">Unidade</th>
+                                <th scope="col" style="width: 15%;" class="text-end pe-3">Qtd.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of demandItems" (click)="toggleItem(item)" class="cursor-pointer">
+                                <td class="ps-3 align-middle">
+                                    <input class="form-check-input" type="checkbox" [checked]="item.selected" (click)="$event.stopPropagation()" (change)="toggleItem(item)">
+                                </td>
+                                <td class="align-middle">{{ item.descricao }}</td>
+                                <td class="align-middle">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="check{{item.id}}" [checked]="item.exigirMarca" disabled>
+                                        <label class="form-check-label small text-secondary" for="check{{item.id}}">
+                                            Exigir Marca
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="align-middle text-secondary">{{ item.unidade }}</td>
+                                <td class="align-middle text-end fw-bold pe-3">{{ item.quantidade }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-end mt-3 pt-3">
+                    <app-button variant="light" customClass="border me-2" (onClick)="backToDemandas()">
+                        <i class="bi bi-arrow-left me-2"></i>Voltar
+                    </app-button>
+                    <app-button variant="secondary" customClass="bg-info border-0 text-white" (onClick)="loadItems()">
+                        <i class="bi bi-check2 me-2"></i>Carregar ({{ selectedItemsCount }})
+                    </app-button>
+                </div>
+            </div>
+        </div>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2" class="flex-fill text-center">
+      <a ngbNavLink class="text-secondary fw-bold small w-100 d-flex justify-content-center align-items-center">
+        <img src="assets/pncp-logo.png" alt="" width="16" height="16" class="me-2" style="display: none;"> <!-- Placeholder for logo -->
+        <i class="bi bi-box-seam me-2 text-warning"></i>Importar do PNCP
+      </a>
+      <ng-template ngbNavContent>
+        <form [formGroup]="pncpForm" class="mt-4">
+            <div class="mb-3">
+                <label class="form-label fw-bold small">Id Contratação PNCP <span class="text-danger">*</span></label>
+                 <app-input formControlName="idContratacao" placeholder="Ex: 12345678901234-1-123456/2026"></app-input>
+            </div>
+             <div class="mb-3">
+                <label class="form-label fw-bold small">Ano <span class="text-danger">*</span></label>
+                 <app-input formControlName="ano" placeholder="Ex: 2026"></app-input>
+            </div>
+             <div class="d-flex justify-content-end mt-5">
+                <app-button variant="light" customClass="border me-2" (onClick)="close()">Cancelar</app-button>
+                <app-button variant="secondary" customClass="bg-info border-0 text-white" (onClick)="searchPncp()">
+                    <i class="bi bi-search me-2"></i>Buscar
+                </app-button>
+            </div>
+        </form>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3" class="flex-fill text-center">
+      <a ngbNavLink class="text-secondary fw-bold small w-100 d-flex justify-content-center align-items-center">
+        <i class="bi bi-plus-lg me-2"></i>Manualmente
+      </a>
+      <ng-template ngbNavContent>
+         <form [formGroup]="manualForm" class="mt-3">
+            <div class="mb-3">
+                <label class="form-label fw-bold small">Descrição <span class="text-danger">*</span></label>
+                <textarea class="form-control" rows="3" placeholder="Descreva o item..." formControlName="descricao"></textarea>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exigirMarca" formControlName="exigirMarca">
+                <label class="form-check-label small fw-bold" for="exigirMarca">Exigir Marca</label>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="form-label fw-bold small">Unidade <span class="text-danger">*</span></label>
+                    <app-select [items]="unidades" formControlName="unidade" placeholder="Selecione"></app-select>
+                </div>
+                 <div class="col-6">
+                    <label class="form-label fw-bold small">Quantidade <span class="text-danger">*</span></label>
+                     <app-input formControlName="quantidade" placeholder="Ex: 100"></app-input>
+                </div>
+            </div>
+             <div class="d-flex justify-content-end mt-4">
+                <app-button variant="light" customClass="border me-2" (onClick)="close()">Cancelar</app-button>
+                <app-button variant="secondary" customClass="bg-info border-0 text-white" (onClick)="saveManual()">
+                    <i class="bi bi-save me-2"></i>Salvar Item
+                </app-button>
+            </div>
+        </form>
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

@@ -1,0 +1,231 @@
+
+:host {
+  display: block;
+}
+
+.card {
+    border-radius: 0.5rem;
+}
+
+.text-info {
+    color: #17a2b8 !important; 
+}
+
+/* Custom background color to match the design's "blue" button */
+.bg-info {
+    background-color: #79aec8 !important; /* Slightly muted blue/teal */
+}
+.bg-info:hover {
+    background-color: #6a9bb3 !important;
+}
+
+/* Ensure inputs and selects have consistent height if needed, 
+   though Bootstrap classes should handle this. 
+   Adding this just in case specific components have different internal paddings */
+::ng-deep .ng-select .ng-select-container {
+    min-height: 38px; /* Standard Bootstrap input height */
+    border-color: #dee2e6;
+}
+
+::ng-deep .form-control {
+    border-color: #dee2e6;
+}
+
+/* Custom Purple Styles */
+.bg-purple-light {
+    background-color: #f3e5f5; /* Light purple */
+}
+.text-purple {
+    color: #6f42c1; /* Bootstrap purple or similar */
+}
+
+/* Custom Warning Style for badges if needed different from bootstrap */
+.bg-warning-light {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.table thead th {
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.progress {
+    border-radius: 10px;
+}
+
+/* LIA Button Styles */
+.btn-lia {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    border-radius: 0.375rem; /* rounded-md */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 500; /* font-medium */
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+    
+    /* Background Gradient: from-violet-500 via-purple-500 to-pink-500 */
+    background-image: linear-gradient(to right, #8b5cf6, #a855f7, #ec4899); 
+    color: white;
+    border: 0;
+    
+    padding: 0.5rem 1rem; /* px-4 py-2 */
+    height: 2.25rem; /* h-9 */
+    width: 100%;
+    gap: 0.5rem; /* gap-2 */
+}
+
+.btn-lia:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.btn-lia svg {
+    pointer-events: none;
+    width: 1rem; /* size-4 */
+    height: 1rem;
+    flex-shrink: 0;
+}
+
+/* Standard Search Button Style (matching btn-info/secondary variant often used) */
+.btn-search-standard {
+    width: 100%;
+    height: 2.25rem; /* Match height */
+    background-color: #5bc0de; /* Bootstrap info or custom */
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Skeleton Loading Styles */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.skeleton-row {
+    td {
+        padding: 1rem 0.5rem;
+        vertical-align: middle;
+    }
+}
+
+.skeleton-bar {
+    height: 1rem;
+    border-radius: 0.25rem;
+    position: relative;
+    overflow: hidden;
+    
+    &.text { height: 1rem; width: 80%; }
+    &.short { height: 1rem; width: 40%; }
+    &.icon { height: 2rem; width: 2rem; border-radius: 0.25rem; }
+}
+
+/* Standard Mode Skeleton */
+.skeleton-standard .skeleton-bar {
+    background: #e9ecef;
+    background: linear-gradient(90deg, #e9ecef 25%, #f8f9fa 50%, #e9ecef 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* LIA Mode Skeleton */
+.skeleton-lia .skeleton-bar {
+    /* Gradient matching LIA theme */
+    background: linear-gradient(90deg, #a855f7 25%, #ec4899 50%, #a855f7 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    opacity: 0.7;
+}
+
+.skeleton-lia .skeleton-check {
+    background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+    opacity: 0.5;
+}
+
+/* Status Badges */
+.bg-orange-light {
+    background-color: #fff7ed; /* orange-50 */
+}
+.text-orange {
+    color: #c2410c; /* orange-700 */
+}
+
+/* Expansion Row Styles */
+.bg-blue-light {
+    background-color: #f0f9ff; /* sky-50 */
+}
+.text-blue {
+    color: #0369a1; /* sky-700 */
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Nested Table Styles */
+.table-nested {
+    background-color: #f8f9fa;
+}
+.table-nested th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    font-weight: 600;
+}
+.table-nested td {
+    font-size: 0.875rem;
+    color: #495057;
+}
+
+/* Source Badges */
+.badge-pncp {
+    background-color: #0d6efd; 
+    color: white;
+}
+.badge-web {
+    background-color: #198754; 
+    color: white;
+}
+
+
+.border-dash {
+    border-style: dashed !important;
+}
+
+/* Quote Selection Styles */
+.btn-check-custom {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    background-color: white;
+    color: #dee2e6;
+    transition: all 0.2s;
+}
+
+.btn-check-custom.selected {
+    background-color: #198754; /* success */
+    border-color: #198754;
+    color: white;
+}
+
+.btn-check-custom:hover:not(.selected) {
+    border-color: #198754;
+    color: #198754;
+}
+
+.badge-cota {
+    background-color: #0d6efd;
+    color: white;
+    font-weight: 500;
+}

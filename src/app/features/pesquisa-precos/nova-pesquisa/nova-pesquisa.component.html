@@ -1,0 +1,364 @@
+  <!-- Header Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <app-header
+        title="Nova Pesquisa de Preços"
+        subtitle="Adicione itens, pesquise preços e conclua a pesquisa"
+        icon="bi bi-search"
+      ></app-header>
+    </div>
+  </div>
+
+  <div class="container m-auto">
+
+    <div class="row mb-3">
+      <div class="col-12">
+        <app-button
+          variant="light"
+          (click)="goBack()"
+          customClass="border bg-white text-secondary"
+        >
+          <i class="bi bi-arrow-left me-2"></i>Voltar
+        </app-button>
+      </div>
+    </div>
+  
+    <!-- Parameters Card -->
+    <div class="card border-0 shadow-sm  m-auto">
+      <div class="card-header bg-white border-bottom-0 pt-3 ps-3">
+        <h5 class="card-title text-secondary d-flex align-items-center">
+          <i class="bi bi-sliders me-2"></i>Itens e Parâmetros de Pesquisa
+        </h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="form">
+          <div class="row g-3">
+            <!-- Row 1 -->
+            <!-- Button Column: Aligned to bottom to match inputs -->
+            <div class="col-md-2 d-flex align-items-end">
+              <app-button
+                variant="light"
+                [fullWidth]="true"
+                customClass="border py-2 text-secondary bg-white"
+                (click)="openInserirItens()"
+              >
+                <i class="bi bi-plus-lg me-2"></i>Inserir Itens
+              </app-button>
+            </div>
+            
+            <div class="col-md-3">
+              <label class="form-label text-secondary small fw-bold mb-1">Macrorregião</label>
+              <app-select
+                [items]="macrorregioes"
+                formControlName="macrorregiao"
+                placeholder="Todas"
+                class="d-block"
+              ></app-select>
+            </div>
+            
+            <div class="col-md-3">
+              <label class="form-label text-secondary small fw-bold mb-1">Região (UF)</label>
+              <app-select
+                [items]="regioes"
+                formControlName="regiao"
+                placeholder="Todas"
+                class="d-block"
+              ></app-select>
+            </div>
+  
+            <div class="col-md-2">
+               <label class="form-label text-secondary small fw-bold mb-1">Valor Mínimo (R$)</label>
+               <app-input
+                 formControlName="valorMinimo"
+                 class="d-block"
+               ></app-input>
+            </div>
+            
+            <div class="col-md-2">
+               <label class="form-label text-secondary small fw-bold mb-1">Valor Máximo (R$)</label>
+               <app-input
+                 formControlName="valorMaximo"
+                 class="d-block"
+               ></app-input>
+            </div>
+  
+            <!-- Row 2 -->
+            <div class="col-md-2">
+               <label class="form-label text-secondary small fw-bold mb-1">Mínimo de Fontes</label>
+               <app-input
+                 formControlName="minimoFontes"
+                 class="d-block"
+               ></app-input>
+            </div>
+            
+             <div class="col-md-2">
+              <label class="form-label text-secondary small fw-bold mb-1">Método de Cálculo</label>
+              <app-select
+                [items]="metodosCalculo"
+                formControlName="metodoCalculo"
+                class="d-block"
+              ></app-select>
+            </div>
+            
+            <div class="col-md-2">
+              <label class="form-label text-secondary small fw-bold mb-1">Fonte de Dados</label>
+              <app-select
+                [items]="fontesDados"
+                formControlName="fonteDados"
+                class="d-block"
+              ></app-select>
+            </div>
+            
+            <div class="col-md-3">
+              <label class="form-label text-secondary small fw-bold mb-1">Forma de Pesquisa</label>
+              <app-select
+                [items]="formasPesquisa"
+                formControlName="formaPesquisa"
+                placeholder="Escolher melhores preços com a LIA"
+                class="d-block"
+              ></app-select>
+            </div>
+
+            <!-- Dynamic Search Button -->
+            <div class="col-md-3 d-flex align-items-end" *ngIf="selectedItems().length > 0">
+               <button *ngIf="form.get('formaPesquisa')?.value === 'MelhoresPrecos'" 
+                       class="btn-lia"
+                       (click)="search()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-4 w-4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+                  Coletar com a LIA
+               </button>
+
+               <button *ngIf="form.get('formaPesquisa')?.value !== 'MelhoresPrecos'" 
+                       class="btn btn-search-standard rounded-md"
+                       (click)="search()">
+                  <i class="bi bi-search"></i> Buscar
+               </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <!-- Results Section -->
+  <div class="card border-0 shadow-sm" *ngIf="selectedItems().length > 0">
+    <div class="card-header bg-white border-bottom-0 pt-3 ps-3 pe-3 d-flex justify-content-between align-items-center">
+      <h5 class="card-title text-secondary d-flex align-items-center mb-0">
+        <i class="bi bi-file-earmark-text me-2"></i>Itens da Pesquisa
+      </h5>
+      <span class="badge bg-purple-light text-purple rounded-pill px-3 py-2">{{ selectedItems().length }} Itens Adicionados</span>
+    </div>
+    
+    <div class="card-body">
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label text-secondary small fw-bold">Descrição Geral</label>
+        <textarea class="form-control bg-light border-0" rows="2" formControlName="descricaoGeral" placeholder="Digite uma descrição geral..."></textarea>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="mb-3">
+           <app-input placeholder="Buscar por descrição..." icon="bi bi-search"></app-input>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive mb-4">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light text-secondary small">
+            <tr>
+              <th scope="col" style="width: 40px;" class="ps-3">
+                <input type="checkbox" class="form-check-input">
+              </th>
+              <th scope="col">Cód.</th>
+              <th scope="col" style="width: 30%;">Descrição</th>
+              <th scope="col">Unidade</th>
+              <th scope="col">Qtd.</th>
+              <th scope="col">Valor Unit. Médio</th>
+              <th scope="col">Fornecedor</th>
+              <th scope="col">Cotações</th>
+              <th scope="col" class="text-center">Status</th>
+              <th scope="col" class="text-end pe-3">Ações</th>
+            </tr>
+          </thead>
+            <!-- Real Data Rows (Grouped by tbody for expansion support) -->
+            <tbody *ngFor="let item of selectedItems()" [class.d-none]="isLoading()" class="border-bottom">
+              <!-- Main Row -->
+              <tr>
+                 <td class="align-middle text-center ps-3">
+                    <input type="checkbox" class="form-check-input">
+                 </td>
+                 <td class="align-middle">{{ item.id }}</td>
+                 <td class="align-middle fw-bold text-secondary">{{ item.descricao }}</td>
+                 <td class="align-middle">{{ item.unidade }}</td>
+                 <td class="align-middle">{{ item.quantidade }}</td>
+                 <td class="align-middle">
+                    {{ (item.valorUnitario || 0) | currency:'BRL' }}
+                 </td>
+                 <!-- Fornecedor -->
+                 <td class="align-middle">
+                     <div *ngIf="!item.selectedFornecedores?.length" class="text-center">-</div>
+                     <div *ngIf="item.selectedFornecedores?.length" class="small text-truncate" style="max-width: 150px;" [title]="item.selectedFornecedores.join(', ')">
+                         <div *ngFor="let f of item.selectedFornecedores.slice(0, 2)">{{ f }}</div>
+                         <div *ngIf="item.selectedFornecedores.length > 2" class="text-muted">...</div>
+                     </div>
+                 </td>
+                 <!-- Cotações -->
+                 <td class="align-middle text-center">
+                    <span *ngIf="!item.selectedQuotesCount" class="text-secondary small">
+                        {{ item.itemsFoundCount ? item.itemsFoundCount + ' Coletados' : 'Nenhuma' }}
+                    </span>
+                    <span *ngIf="item.selectedQuotesCount" class="badge rounded-pill bg-primary">
+                        {{ item.selectedQuotesCount }} cotações
+                    </span>
+                 </td>
+                 <!-- Status & Actions -->
+                 <td class="align-middle text-center">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <span class="badge rounded-pill px-3 py-2" 
+                              [ngClass]="item.badgeClass || 'bg-purple-light text-purple'">
+                            {{ item.status || 'Pendente' }}
+                        </span>
+                        
+                        <!-- Concluir Button (Visible if >= 3 quotes) -->
+                         <button *ngIf="item.selectedQuotesCount >= 3" 
+                                 class="btn btn-sm btn-outline-success d-flex align-items-center gap-1 rounded-pill px-3">
+                             <i class="bi bi-check-lg"></i> Concluir
+                         </button>
+                    </div>
+                 </td>
+                  <td class="align-middle text-end pe-3">
+                      <button class="btn btn-sm text-danger" (click)="removeItem(item)">
+                          <i class="bi bi-trash"></i>
+                      </button>
+                  </td>
+              </tr>
+
+              <!-- Summary / Expansion Toggle Row -->
+              <tr *ngIf="item.status === 'Coletado'">
+                  <td colspan="10" class="p-0 border-0">
+                      <div class="bg-light py-2 px-3 ms-4 me-4 mb-2 rounded border border-dash d-flex align-items-center cursor-pointer text-primary bg-opacity-25" 
+                           [ngClass]="{'bg-primary': !item.expanded, 'bg-light': item.expanded}"
+                           style="--bs-bg-opacity: .1;"
+                           (click)="toggleExpand(item)">
+                          <i class="bi me-2" [ngClass]="item.expanded ? 'bi-dash-square' : 'bi-plus-square'"></i>
+                          <span class="small fw-bold">{{ item.itemsFoundCount }} itens encontrados</span>
+                      </div>
+                  </td>
+              </tr>
+
+              <!-- Expanded Details Row -->
+              <tr *ngIf="item.expanded">
+                  <td colspan="10" class="p-0 bg-light">
+                      <div class="p-3">
+                          <table class="table table-sm table-nested mb-0 border rounded">
+                              <thead>
+                                  <tr>
+                                      <th class="ps-3" style="width: 30%;">Fornecedor / CNPJ</th>
+                                      <th style="width: 30%;">Descrição</th>
+                                      <th>Valor Unitário</th>
+                                      <th class="text-center">Fonte</th>
+                                      <th class="text-center">Referência</th>
+                                      <th class="text-center">Escolha</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let found of item.foundItems">
+                                      <td class="ps-3">
+                                          <div class="d-flex flex-column">
+                                              <span class="fw-bold text-dark">{{ found.fornecedor }}</span>
+                                              <span class="text-muted small">{{ found.cnpj }}</span>
+                                          </div>
+                                      </td>
+                                      <td>
+                                          <span class="text-wrap small">{{ found.descricao }}</span>
+                                      </td>
+                                      <td class="fw-bold text-dark">
+                                          {{ found.valor | currency:'BRL' }}
+                                      </td>
+                                      <td class="text-center">
+                                          <span class="badge rounded-pill" [ngClass]="found.badge">{{ found.fonte }}</span>
+                                      </td>
+                                      <td class="text-center">
+                                          <a href="javascript:void(0)" class="text-primary"><i class="bi bi-box-arrow-up-right"></i></a>
+                                      </td>
+                                      <td class="text-center">
+                                          <!-- Custom Check Button -->
+                                          <button class="btn btn-check-custom mx-auto" 
+                                                  [class.selected]="found.selected"
+                                                  (click)="toggleQuote(item, found)">
+                                              <i class="bi bi-check-lg" *ngIf="found.selected"></i>
+                                              <i class="bi bi-check" *ngIf="!found.selected"></i>
+                                          </button>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </td>
+              </tr>
+            </tbody>
+
+            <!-- Skeleton Rows (Visible when isLoading) -->
+            <tbody *ngIf="isLoading()">
+                  <tr *ngFor="let i of [1,2,3]" class="skeleton-row" 
+                      [ngClass]="{'skeleton-lia': form.get('formaPesquisa')?.value === 'MelhoresPrecos', 'skeleton-standard': form.get('formaPesquisa')?.value !== 'MelhoresPrecos'}">
+                      <td class="align-middle text-center ps-3">
+                          <div class="skeleton-check skeleton-bar icon mx-auto" style="width: 1.25rem; height: 1.25rem;"></div>
+                      </td>
+                      <td><div class="skeleton-bar short" style="width: 30px;"></div></td>
+                      <td><div class="skeleton-bar text" style="width: 90%;"></div></td>
+                      <td><div class="skeleton-bar short" style="width: 40px;"></div></td>
+                      <td><div class="skeleton-bar short" style="width: 30px;"></div></td>
+                      <td><div class="skeleton-bar short" style="width: 60px;"></div></td>
+                      <!-- Fornecedor Skeleton -->
+                      <td><div class="skeleton-bar text" style="width: 80px;"></div></td>
+                      <!-- Cotações Skeleton -->
+                      <td><div class="skeleton-bar short" style="width: 40px;"></div></td>
+                      <!-- Status Skeleton -->
+                      <td class="text-center"><div class="skeleton-bar short mx-auto" style="width: 60px; height: 20px; border-radius: 12px;"></div></td>
+                      <!-- Actions Skeleton -->
+                      <td class="text-end pe-3">
+                           <div class="skeleton-bar icon ms-auto" style="width: 24px; height: 24px; border-radius: 4px;"></div>
+                      </td>
+                  </tr>
+            </tbody>
+        </table>
+      </div>
+
+      <!-- Footer / Progress -->
+      <div class="d-flex justify-content-between align-items-end border-top pt-3">
+        <div class="d-flex align-items-center">
+            <span class="text-secondary small fw-bold me-2">0 de {{ selectedItems().length }} itens concluídos</span>
+            <span class="badge bg-warning text-dark rounded-pill">{{ progress().pending }} pendente(s)</span>
+        </div>
+         <div class="text-end">
+            <small class="text-secondary d-block small">Valor Total</small>
+            <div class="h5 text-dark fw-bold mb-0">-</div>
+        </div>
+      </div>
+      
+       <!-- Progress Bar -->
+       <div class="progress mt-2" style="height: 4px;">
+        <div class="progress-bar bg-info" role="progressbar" [style.width.%]="progress().percentage" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+       </div>
+
+       <div class="d-flex justify-content-between pt-4">
+            <app-button
+              variant="light"
+              customClass="border bg-white text-secondary"
+              (click)="saveDraft()"
+            >
+              <i class="bi bi-save me-2"></i>Salvar Rascunho
+            </app-button>
+
+             <app-button
+              variant="secondary"
+              customClass="bg-info border-0 text-white"
+               (click)="generateReport()"
+            >
+              <i class="bi bi-file-earmark-text me-2"></i>Gerar Relatório de Pesquisa de Preço
+            </app-button>
+       </div>
+    </div>
+  </div>
+</div>
+  <!-- Back Button -->

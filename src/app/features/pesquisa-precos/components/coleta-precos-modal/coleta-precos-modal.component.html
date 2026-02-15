@@ -1,0 +1,58 @@
+<div class="modal-body text-center py-5" [ngClass]="{'lia-mode': mode === 'lia'}">
+    <div class="d-flex justify-content-end position-absolute top-0 end-0 p-3">
+        <button type="button" class="btn-close" [class.btn-close-white]="mode === 'lia'" aria-label="Close" (click)="activeModal.dismiss()"></button>
+    </div>
+
+    <!-- Manual Mode Content -->
+    <ng-container *ngIf="mode === 'manual'">
+        <div class="mb-4">
+            <div class="icon-container mx-auto d-flex align-items-center justify-content-center">
+                <i class="bi bi-check-lg text-white fs-1"></i>
+            </div>
+        </div>
+
+        <h4 class="fw-bold mb-3 text-dark">Coletando Preços...</h4>
+        
+        <p class="text-secondary mb-5 px-5">
+            Buscando preços nas fontes selecionadas. Aguarde um momento.
+        </p>
+
+        <div class="d-flex justify-content-center">
+            <app-button 
+                variant="light" 
+                customClass="border px-4" 
+                (onClick)="close()">
+                Fechar
+            </app-button>
+        </div>
+    </ng-container>
+
+    <!-- LIA Mode Content -->
+    <ng-container *ngIf="mode === 'lia'">
+        <div class="mb-4">
+            <!-- LIA Icon Container -->
+            <div class="lia-icon-container mx-auto d-flex align-items-center justify-content-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+            </div>
+        </div>
+
+        <h4 class="fw-bold mb-3 text-white">LIA está aprimorando sua pesquisa...</h4>
+        
+        <p class="text-white-50 mb-4 px-5">
+            A inteligência artificial está analisando e cruzando dados para encontrar os melhores preços.
+        </p>
+
+        <!-- Loading Dots -->
+        <div class="loading-dots mb-5">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="d-flex justify-content-center">
+             <button class="btn btn-white-opacity px-4 py-2 rounded-3 fw-bold" (click)="close()">
+                Fechar
+             </button>
+        </div>
+    </ng-container>
+</div>

@@ -8,4 +8,18 @@ export const routes: Routes = [
         (m) => m.PEDIDOS_ADESAO_ROUTES,
       ),
   },
+  {
+    path: 'assinaturas',
+    loadChildren: () =>
+      import('./features/assinaturas/assinaturas.routes').then(
+        (m) => m.ASSINATURA_ROUTES,
+      ),
+  },
+  {
+    path: 'pesquisa-precos',
+    loadChildren: () =>
+      import('./features/pesquisa-precos/pesquisa-precos.routes').then(
+        (m) => m.PESQUISA_PRECOS_ROUTES,
+      ),
+  },
 ];

@@ -1,0 +1,42 @@
+
+.nav-pills .nav-link {
+    border-radius: 0.25rem;
+    color: #6c757d; /* text-secondary */
+    background-color: transparent;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #fff;
+    color: #212529; /* text-dark */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bg-info {
+    background-color: #79aec8 !important; /* Muted blue/teal */
+}
+
+/* Custom list group item style */
+.list-group-item {
+    border-bottom: 1px solid #dee2e6;
+    transition: background-color 0.2s;
+}
+.list-group-item:last-child {
+    border-bottom: 0;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.active-demanda {
+    background-color: #e9ecef; /* or lighter version of your primary color */
+    border-left: 4px solid #79aec8;
+}
+
+/* Ensure textarea matches input styles if needed */
+textarea.form-control {
+    border-color: #dee2e6;
+    font-size: 0.875rem; /* small */
+}
