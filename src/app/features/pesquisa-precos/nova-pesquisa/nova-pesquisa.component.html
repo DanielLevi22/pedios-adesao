@@ -218,9 +218,10 @@
                             {{ item.status || 'Pendente' }}
                         </span>
                         
-                        <!-- Concluir Button (Visible if >= 3 quotes) -->
-                         <button *ngIf="item.selectedQuotesCount >= 3" 
-                                 class="btn btn-sm btn-outline-success d-flex align-items-center gap-1 rounded-pill px-3">
+                        <!-- Concluir Button (Visible if >= 3 quotes and not concluded) -->
+                         <button *ngIf="item.selectedQuotesCount >= 3 && item.status !== 'Concluído'" 
+                                 class="btn btn-sm btn-outline-success d-flex align-items-center gap-1 rounded-pill px-3"
+                                 (click)="concludeItem(item)">
                              <i class="bi bi-check-lg"></i> Concluir
                          </button>
                     </div>

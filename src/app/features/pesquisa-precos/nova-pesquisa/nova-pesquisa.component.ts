@@ -172,14 +172,17 @@ export class NovaPesquisaComponent {
         modalRef.close();
         
         // Populate items with mock results
-        this.selectedItems.update(items => items.map(item => ({
-            ...item,
-            status: 'Coletado', // Change status to Coletado
-            badgeClass: 'bg-orange-light text-orange', // Orange badge style
-            expanded: false,
-            itemsFoundCount: 8,
-            foundItems: this.getMockFoundItems() // specific mock items
-        })));
+        this.selectedItems.update(items => items.map(item => {
+            const basePrice = item.valorUnitario || 100; // Fallback if no price
+            return {
+                ...item,
+                status: 'Coletado', 
+                badgeClass: 'bg-orange-light text-orange', 
+                expanded: false,
+                itemsFoundCount: 8,
+                foundItems: this.getMockFoundItems(basePrice) // Dynamic quotes based on price
+            };
+        }));
     }, 3000);
   }
 
@@ -193,6 +196,8 @@ export class NovaPesquisaComponent {
   }
 
   toggleQuote(item: any, quote: any) {
+    if (item.status === 'Concluído') return; // Prevent changes if already concluded
+
     // toggle selection
     quote.selected = !quote.selected;
     
@@ -217,19 +222,29 @@ export class NovaPesquisaComponent {
       // Update Suppliers Text
       item.selectedFornecedores = selectedQuotes.map((q: any) => q.fornecedor);
       
-      // Force update signal reference to trigger change detection in template if needed 
-      // (though mutation of object inside array might be detected if using standard change detection, 
-      // but strictly for signals we might need to spread. 
-      // Since we are mutating the item object directly above, let's refresh the signal to be safe and idiomatic)
       this.selectedItems.update(items => [...items]);
   }
 
-  getMockFoundItems() {
+  concludeItem(item: any) {
+      item.status = 'Concluído';
+      item.badgeClass = 'bg-success text-white'; // Green badge
+      item.expanded = false; // Collapse details
+      this.selectedItems.update(items => [...items]);
+  }
+
+  getMockFoundItems(basePrice: number) {
+      // Helper to vary price by +/- 20%
+      const vary = (price: number) => price * (0.8 + Math.random() * 0.4);
+      
       return [
-          { fornecedor: 'Distribuidora de Materiais LTDA', cnpj: '12.345.678/0001-23', descricao: 'Manutenção preventiva de computadores, material de alta qualidade.', valor: 2861.35, fonte: 'PNCP', badge: 'bg-primary', selected: false },
-          { fornecedor: 'Comércio Nacional de Suprimentos S/A', cnpj: '98.765.432/0001-99', descricao: 'Manutenção preventiva de computadores, pacote com 100 unidades.', valor: 3265.67, fonte: 'PNCP', badge: 'bg-primary', selected: false },
-          { fornecedor: 'Tech Solutions Importação EIRELI', cnpj: '55.444.333/0001-22', descricao: 'Manutenção preventiva de computadores, kit sortido.', valor: 3110.16, fonte: 'Web', badge: 'bg-success', selected: false },
-           { fornecedor: 'Papelaria Central LTDA', cnpj: '11.222.333/0001-44', descricao: 'Manutenção preventiva de computadores, pacote econômico.', valor: 2736.94, fonte: 'PNCP', badge: 'bg-primary', selected: false },
+          { fornecedor: 'Distribuidora de Materiais LTDA', cnpj: '12.345.678/0001-23', descricao: 'Manutenção preventiva de computadores, material de alta qualidade.', valor: vary(basePrice), fonte: 'PNCP', badge: 'bg-primary', selected: false },
+          { fornecedor: 'Comércio Nacional de Suprimentos S/A', cnpj: '98.765.432/0001-99', descricao: 'Manutenção preventiva de computadores, pacote com 100 unidades.', valor: vary(basePrice), fonte: 'PNCP', badge: 'bg-primary', selected: false },
+          { fornecedor: 'Tech Solutions Importação EIRELI', cnpj: '55.444.333/0001-22', descricao: 'Manutenção preventiva de computadores, kit sortido.', valor: vary(basePrice), fonte: 'Web', badge: 'bg-success', selected: false },
+           { fornecedor: 'Papelaria Central LTDA', cnpj: '11.222.333/0001-44', descricao: 'Manutenção preventiva de computadores, pacote econômico.', valor: vary(basePrice), fonte: 'PNCP', badge: 'bg-primary', selected: false },
+           { fornecedor: 'Global Supply Comércio ME', cnpj: '22.333.444/0001-55', descricao: 'Manutenção preventiva premium, corpo em material reciclado.', valor: vary(basePrice), fonte: 'Web', badge: 'bg-success', selected: false },
+           { fornecedor: 'Office Premium Distribuidora LTDA', cnpj: '33.444.555/0001-66', descricao: 'Manutenção preventiva escolar aprovado pelo INMETRO.', valor: vary(basePrice), fonte: 'PNCP', badge: 'bg-primary', selected: false },
+           { fornecedor: 'Brasil Atacadista de Escritório S/A', cnpj: '44.555.666/0001-77', descricao: 'Lote atacado com 500 unidades, entrega fracionada.', valor: vary(basePrice), fonte: 'PNCP', badge: 'bg-primary', selected: false },
+           { fornecedor: 'Mega Suprimentos e Logística EIRELI', cnpj: '66.777.888/0001-99', descricao: 'Caixa com 25 unidades, tinta importada secagem rápida.', valor: vary(basePrice), fonte: 'Web', badge: 'bg-success', selected: false },
       ];
   }
 
